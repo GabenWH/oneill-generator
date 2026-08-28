@@ -10,6 +10,10 @@ public class WorldBootstrap : MonoBehaviour
     [Header("Custom Drone")]
     public GameObject dronePrefab;
     public float droneStartRadius = 1000f;
+
+    [Header("Cylinder Materials")]
+    public Material landMaterial;
+    public Material windowMaterial;
     [Header("Drone Start")]
     [Tooltip("How far inside the terrain surface the drone starts.")]
     // Terrain can protrude up to 50 m inward, so this safely starts in open air.
@@ -36,30 +40,6 @@ public class WorldBootstrap : MonoBehaviour
         world.length = length;
 
         // -----------------------------
-        // MATERIAL
-        // -----------------------------
-
-        Material land =
-            new Material(
-                Shader.Find("Standard")
-            );
-
-        land.name =
-            "Procedural Land";
-
-        land.color =
-            new Color(
-                0.20f,
-                0.42f,
-                0.16f
-            );
-
-        land.SetFloat(
-            "_Glossiness",
-            0.05f
-        );
-
-        // -----------------------------
         // CHUNKS
         // -----------------------------
 
@@ -77,7 +57,9 @@ public class WorldBootstrap : MonoBehaviour
             world;
 
         manager.landMaterial =
-            land;
+            landMaterial;
+        manager.glassMaterial =
+            windowMaterial;
 
         // -----------------------------
         // DRONE
@@ -139,7 +121,7 @@ public class WorldBootstrap : MonoBehaviour
         // -----------------------------
         // CAMERA
         // -----------------------------
-        if(drone.GetComponent<Camera>()==null){
+        if(drone.GetComponentInChildren<Camera>()==null){
         GameObject cameraObject =
             new GameObject(
                 "Drone Camera"
@@ -174,6 +156,15 @@ public class WorldBootstrap : MonoBehaviour
         cameraObject.AddComponent<
             AudioListener
         >();
+        }
+        else {
+            Camera camera = drone.GetComponentInChildren<Camera>();
+
+            camera.fieldOfView = 75f;
+
+            camera.nearClipPlane = 0.1f;
+
+            camera.farClipPlane = 50000f;
         }
         // -----------------------------
         // SUN

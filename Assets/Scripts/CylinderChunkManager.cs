@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CylinderChunkManager : MonoBehaviour
@@ -14,6 +15,7 @@ public class CylinderChunkManager : MonoBehaviour
 
     [Header("Materials")]
     public Material landMaterial;
+    public Material glassMaterial;
 
     private void Start()
     {
@@ -32,7 +34,10 @@ public class CylinderChunkManager : MonoBehaviour
                 // Every fourth strip is left open,
                 // approximating O'Neill window bands.
                 if (a % 4 == 3)
+                {
+                    GenerateWindow(a, z);
                     continue;
+                }
 
                 GameObject chunk =
                     new GameObject(
@@ -70,5 +75,43 @@ public class CylinderChunkManager : MonoBehaviour
                 );
             }
         }
+    }
+
+    private void GenerateWindow(int a, int z)
+    {
+        GameObject chunk =
+    new GameObject(
+        $"GlassChunk_{a}_{z}"
+    );
+
+        chunk.transform.SetParent(
+            transform,
+            false
+        );
+
+        MeshRenderer renderer =
+            chunk.AddComponent<MeshRenderer>();
+
+        MeshFilter filter =
+            chunk.AddComponent<MeshFilter>();
+
+        MeshCollider collider =
+            chunk.AddComponent<MeshCollider>();
+
+        CylinderWindowChunk cylinderChunk =
+            chunk.AddComponent<CylinderWindowChunk>();
+
+        renderer.material =
+            glassMaterial;
+
+        cylinderChunk.Generate(
+            world,
+            a,
+            z,
+            angularChunks,
+            longitudinalChunks,
+            angularResolution,
+            longitudinalResolution
+        );
     }
 }

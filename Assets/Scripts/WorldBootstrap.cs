@@ -139,7 +139,7 @@ public class WorldBootstrap : MonoBehaviour
         // -----------------------------
         // CAMERA
         // -----------------------------
-
+        if(drone.GetComponent<Camera>()==null){
         GameObject cameraObject =
             new GameObject(
                 "Drone Camera"
@@ -174,7 +174,7 @@ public class WorldBootstrap : MonoBehaviour
         cameraObject.AddComponent<
             AudioListener
         >();
-
+        }
         // -----------------------------
         // SUN
         // -----------------------------

@@ -6,6 +6,10 @@ public class WorldBootstrap : MonoBehaviour
     public float radius = 4000f;
     public float length = 32000f;
 
+
+    [Header("Custom Drone")]
+    public GameObject dronePrefab;
+    public float droneStartRadius = 1000f;
     [Header("Drone Start")]
     [Tooltip("How far inside the terrain surface the drone starts.")]
     // Terrain can protrude up to 50 m inward, so this safely starts in open air.
@@ -79,8 +83,37 @@ public class WorldBootstrap : MonoBehaviour
         // DRONE
         // -----------------------------
 
-        GameObject drone =
-            new GameObject("Drone");
+        GameObject drone;
+        if (dronePrefab != null){
+            drone = Instantiate(
+                dronePrefab,
+                new Vector3(droneStartRadius,0f,0f),
+                Quaternion.identity
+            );
+        }
+        else {
+            Debug.LogWarning(
+                "No drone prefab assigned. Creating placeholder"
+            );
+
+            drone = 
+                GameObject.CreatePrimitive(PrimitiveType.Sphere);
+
+            Rigidbody rb =
+                drone.AddComponent<Rigidbody>();
+            rb.mass = 10f;
+            rb.useGravity = false;
+
+            drone.GetComponent<SphereCollider>().radius = 1f;
+
+            drone.transform.position =
+                new Vector3(droneStartRadius,0f,0f);
+
+            DroneController controller =
+                drone.AddComponent<
+                    DroneController
+            >();
+        }
 
         // Start just inside the +X surface, looking across the habitat.
         drone.transform.position = new Vector3(
@@ -94,24 +127,6 @@ public class WorldBootstrap : MonoBehaviour
             Vector3.left,
             Vector3.forward
         );
-
-        Rigidbody rb =
-            drone.AddComponent<Rigidbody>();
-
-        rb.mass = 10f;
-        rb.useGravity = false;
-
-        SphereCollider droneCollider =
-            drone.AddComponent<
-                SphereCollider
-            >();
-
-        droneCollider.radius = 1f;
-
-        DroneController controller =
-            drone.AddComponent<
-                DroneController
-            >();
 
         CylinderGravity gravity =
             drone.AddComponent<

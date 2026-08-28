@@ -15,59 +15,47 @@ public class ONeillWorld : MonoBehaviour
 
     public float AngularVelocity
     {
-        get
-        {
-            // a = omega² r
-            return Mathf.Sqrt(surfaceGravity / radius);
-        }
+        get { return Mathf.Sqrt(surfaceGravity / radius); }
     }
 
     public float RPM
     {
-        get
-        {
-            return AngularVelocity * 60f / (2f * Mathf.PI);
-        }
+        get { return AngularVelocity * 60f / (2f * Mathf.PI); }
     }
 
-    /// <summary>
-    /// Returns centrifugal acceleration at the supplied position.
-    /// Cylinder axis is world Z.
-    /// </summary>
-    public Vector3 GetCentrifugalAcceleration(Vector3 worldPosition)
+    public Vector3 GetCentrifugalAcceleration(Vector3 position)
     {
-        Vector3 local = worldPosition - transform.position;
+        Vector3 r = position - transform.position;
 
-        Vector3 radial = new Vector3(local.x, local.y, 0f);
+        // Cylinder axis is Z. Axial displacement contributes
+        // nothing to centrifugal acceleration.
+        r = Vector3.ProjectOnPlane(r, Vector3.forward);
 
-        if (radial.sqrMagnitude < 0.0001f)
-            return Vector3.zero;
+        Vector3 omega = Vector3.forward * AngularVelocity;
 
-        float r = radial.magnitude;
-
-        return radial.normalized * AngularVelocity * AngularVelocity * r;
+        return -Vector3.Cross(
+            omega,
+            Vector3.Cross(omega, r)
+        );
     }
 
-    /// <summary>
-    /// Acceleration in a rotating reference frame.
-    /// Includes centrifugal acceleration and optionally Coriolis acceleration.
-    /// </summary>
     public Vector3 GetRotatingFrameAcceleration(
-        Vector3 worldPosition,
-        Vector3 worldVelocity)
+        Vector3 position,
+        Vector3 velocity)
     {
-        Vector3 acceleration = GetCentrifugalAcceleration(worldPosition);
+        Vector3 centrifugal =
+            GetCentrifugalAcceleration(position);
 
-        if (simulateCoriolis)
-        {
-            Vector3 omega = Vector3.forward * AngularVelocity;
+        if (!simulateCoriolis)
+            return centrifugal;
 
-            // Coriolis:
-            // a = -2 omega x v
-            acceleration += -2f * Vector3.Cross(omega, worldVelocity);
-        }
+        Vector3 omega =
+            Vector3.forward * AngularVelocity;
 
-        return acceleration;
+        Vector3 coriolis =
+            -2f * Vector3.Cross(omega, velocity);
+
+        return centrifugal + coriolis;
     }
 
     public float GravityAtRadius(float r)
@@ -75,12 +63,12 @@ public class ONeillWorld : MonoBehaviour
         return AngularVelocity * AngularVelocity * r;
     }
 
-    public float GravityFraction(Vector3 worldPosition)
+    public float GravityFraction(Vector3 position)
     {
-        Vector3 local = worldPosition - transform.position;
-        float r = new Vector2(local.x, local.y).magnitude;
+        Vector3 r = position - transform.position;
+        r = Vector3.ProjectOnPlane(r, Vector3.forward);
 
-        return GravityAtRadius(r) / surfaceGravity;
+        return GravityAtRadius(r.magnitude) / surfaceGravity;
     }
 
     private void Start()

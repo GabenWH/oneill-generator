@@ -5,13 +5,14 @@ public class CylinderGravity : MonoBehaviour
 {
     public ONeillWorld world;
 
-    public bool applyCoriolis = true;
-
     private Rigidbody rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        // Unity's normal downward gravity makes no sense
+        // inside the cylinder.
         rb.useGravity = false;
     }
 
@@ -26,21 +27,15 @@ public class CylinderGravity : MonoBehaviour
         if (world == null)
             return;
 
-        Vector3 acceleration;
-
-        if (applyCoriolis)
-        {
-            acceleration = world.GetRotatingFrameAcceleration(
-                transform.position,
+        Vector3 acceleration =
+            world.GetRotatingFrameAcceleration(
+                rb.position,
                 rb.velocity
             );
-        }
-        else
-        {
-            acceleration =
-                world.GetCentrifugalAcceleration(transform.position);
-        }
 
-        rb.AddForce(acceleration, ForceMode.Acceleration);
+        rb.AddForce(
+            acceleration,
+            ForceMode.Acceleration
+        );
     }
 }

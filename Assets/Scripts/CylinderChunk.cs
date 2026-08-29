@@ -139,7 +139,7 @@ public class CylinderChunk : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.uv = uvs;
-        mesh.colors = colors
+        mesh.colors = colors;
 
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();

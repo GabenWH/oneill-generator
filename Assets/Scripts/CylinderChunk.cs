@@ -26,10 +26,9 @@ public class CylinderChunk : MonoBehaviour
 
         int vertsAround = angularResolution + 1;
         int vertsLong = longitudinalResolution + 1;
-
         Vector3[] vertices =
             new Vector3[vertsAround * vertsLong];
-
+        Color[] colors = new Color[vertices.Length];
         Vector2[] uvs =
             new Vector2[vertices.Length];
 
@@ -92,6 +91,19 @@ public class CylinderChunk : MonoBehaviour
                     worldZ
                 );
 
+                switch(terrainHeight)
+                {
+                    case <-20f:
+                        colors[v] = new Color(0.15f, 0.3f, 0.1f);
+                        break;
+                    case < 20f:
+                        colors[v] = new Color(0.25f,0.5f,0.15f);
+                        break;
+                    default:
+                        colors[v] = new Color(0.35f,0.3f,0.2f);
+                        break;
+                }
+
                 uvs[v] = new Vector2(
                     ta,
                     tz
@@ -127,6 +139,7 @@ public class CylinderChunk : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.uv = uvs;
+        mesh.colors = colors
 
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();

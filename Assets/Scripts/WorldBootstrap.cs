@@ -14,6 +14,9 @@ public class WorldBootstrap : MonoBehaviour
     [Header("Cylinder Materials")]
     public Material landMaterial;
     public Material windowMaterial;
+    public Color lowColor;
+    public Color midColor;
+    public Color highColor;
     [Header("Drone Start")]
     [Tooltip("How far inside the terrain surface the drone starts.")]
     // Terrain can protrude up to 50 m inward, so this safely starts in open air.

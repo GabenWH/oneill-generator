@@ -6,6 +6,9 @@ Shader "Custom/LandShader"
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
+        _ValleyColor ("Valley Color", Color)= (0.08, 0.25,0.10,1)
+        _LandColor ("Land Color", Color)= (0.25,0.50,15,1)
+        _PeakColor ("Peak Color", Color)= (0.45, 0.30, 0.20, 1)
     }
     SubShader
     {
@@ -24,8 +27,12 @@ Shader "Custom/LandShader"
         struct Input
         {
             float2 uv_MainTex;
+            fixed4 color : COLOR;
         };
-
+        fixed4 _ValleyColor;
+        fixed4 _LandColor;
+        fixed4 _PeakColor;
+    
         half _Glossiness;
         half _Metallic;
         fixed4 _Color;
@@ -39,13 +46,17 @@ Shader "Custom/LandShader"
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            // Albedo comes from a texture tinted by color
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = c.rgb;
+            float height = IN.color.r;
+            fixed3 terrainColor = 
+                height< 0.5
+                ? lerp(_ValleyColor.rgb, _LandColor.rgb, height*2.0) 
+                : lerp(_LandColor.rgb,_PeakColor.rgb, (height-0.5)*2.0);
+
+            o.Albedo = terrainColor;
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
-            o.Alpha = c.a;
+            o.Alpha = 1.0f;
         }
         ENDCG
     }

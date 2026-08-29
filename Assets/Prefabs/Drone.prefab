@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 7194939788646607486}
   - component: {fileID: 3885041051701420880}
   m_Layer: 0
-  m_Name: ParticleEmitter
+  m_Name: ParticleEmitterRearR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5126,6 +5126,8 @@ MonoBehaviour:
   rollSpeed: 80
   linearDrag: 0.15
   angularDrag: 2
+  leftThruster: {fileID: 5853978912835505530}
+  rightThruster: {fileID: 7194939788646607486}
 --- !u!1 &2655288176966097734
 GameObject:
   m_ObjectHideFlags: 0
@@ -5243,7 +5245,7 @@ GameObject:
   - component: {fileID: 5853978912835505530}
   - component: {fileID: 6524523227175793064}
   m_Layer: 0
-  m_Name: ParticleEmitter
+  m_Name: ParticleEmitterRearL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

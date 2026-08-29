@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -91,18 +93,8 @@ public class CylinderChunk : MonoBehaviour
                     worldZ
                 );
 
-                switch(terrainHeight)
-                {
-                    case <-20f:
-                        colors[v] = new Color(0.15f, 0.3f, 0.1f);
-                        break;
-                    case < 20f:
-                        colors[v] = new Color(0.25f,0.5f,0.15f);
-                        break;
-                    default:
-                        colors[v] = new Color(0.35f,0.3f,0.2f);
-                        break;
-                }
+                float heightForShader = Mathf.InverseLerp(-50f,50f,terrainHeight);
+                colors[v] = new Color(heightForShader,0f,0f,1f);
 
                 uvs[v] = new Vector2(
                     ta,

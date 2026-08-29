@@ -15,6 +15,10 @@ public class DroneController : MonoBehaviour
     public float linearDrag = 0.15f;
     public float angularDrag = 2f;
 
+    [Header("Thrusters")]
+    public ParticleSystem leftThruster;
+    public ParticleSystem rightThruster;
+
     private Rigidbody rb;
 
     private void Awake()
@@ -59,9 +63,13 @@ public class DroneController : MonoBehaviour
 
     private void HandleMovement()
     {
+        float mouseX = 
+            Input.GetAxis("Mouse X");
+        float mouseY = 
+            Input.GetAxis("Mouse Y");
+
         float forward =
             Input.GetAxisRaw("Vertical");
-
         float sideways =
             Input.GetAxisRaw("Horizontal");
 
@@ -87,7 +95,25 @@ public class DroneController : MonoBehaviour
 
         if (input.sqrMagnitude > 1f)
             input.Normalize();
+        if(forward > 0f || mouseX>0.2f)
+        {
+            var leftEmission = leftThruster.emission;
+            var rightEmission = rightThruster.emission;
+            var baseEmission=1f;
+            var forwardSpeed = 1f;
+            var turnRet = 20f;
+            leftEmission.rateOverTime = baseEmission + forwardSpeed * 50 - Mathf.Max(mouseX,0f)*turnRet;
+            rightEmission.rateOverTime= baseEmission + forwardSpeed * 50 + Mathf.Min(mouseX,0f)*turnRet;
 
+
+            leftThruster.Play();
+            rightThruster.Play();
+        }
+        else
+        {
+            leftThruster.Stop();
+            rightThruster.Stop();
+        }
         rb.AddRelativeForce(
             input *
             thrust *

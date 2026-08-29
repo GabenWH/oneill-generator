@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LandMaterial
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 9a7ce4067df3d9023b90d6e24b22b552, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -19,7 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _Color
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -78,6 +78,9 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.35838336, g: 0.9245283, b: 0.19624424, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LandColor: {r: 0.13163048, g: 0.3207547, b: 0.1715305, a: 1}
+    - _PeakColor: {r: 0.45, g: 0.29999998, b: 0.19999996, a: 1}
+    - _ValleyColor: {r: 0.054957267, g: 0.38556445, b: 0.6132076, a: 1}
   m_BuildTextureStacks: []

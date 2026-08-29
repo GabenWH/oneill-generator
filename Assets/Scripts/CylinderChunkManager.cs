@@ -15,6 +15,9 @@ public class CylinderChunkManager : MonoBehaviour
 
     [Header("Materials")]
     public Material landMaterial;
+    public Color lowColor;
+    public Color midColor;
+    public Color highColor;
     public Material glassMaterial;
 
     private void Start()

@@ -155,6 +155,11 @@ MonoBehaviour:
   length: 32000
   dronePrefab: {fileID: 1400179906372130590, guid: c932de5b7999093588e273f2d9e7e734, type: 3}
   droneStartRadius: 1000
+  landMaterial: {fileID: 2100000, guid: 4367530a3b0d7393c811005908be383f, type: 2}
+  windowMaterial: {fileID: 2100000, guid: 9ce3d8641f48838c7b7d36255d29f575, type: 2}
+  lowColor: {r: 0, g: 0, b: 0, a: 0}
+  midColor: {r: 0, g: 0, b: 0, a: 0}
+  highColor: {r: 0, g: 0, b: 0, a: 0}
   droneSurfaceClearance: 75
 --- !u!4 &1271953778
 Transform:

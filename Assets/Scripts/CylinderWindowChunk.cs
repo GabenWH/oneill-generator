@@ -37,13 +37,17 @@ public class CylinderWindowChunk : MonoBehaviour
         Vector2[] uvs =
             new Vector2[vertices.Length];
 
+        //dont ask me why its times 6
         int[] triangles =
             new int[
                 angularResolution *
                 longitudinalResolution *
                 6 * 2
+                +  2 * longitudinalResolution * 6
+                +  2 * angularResolution * 6
             ];
-
+        // me multiplying 2 * 6 is not good documentation. but it is good documentation of my struggle to undertand basic geometry. I could just put 24 but I own up to my mistakes.
+        // side note, if you're confused why this is a geometry issue and not an arithmatic issue, go back to highschool.
 
         //a fuck ton of math I forgot to comment idk take highschool trig again and then explain it to me I was high when I wrote this :P
         float anglePerChunk =
@@ -68,6 +72,7 @@ public class CylinderWindowChunk : MonoBehaviour
 
             float worldZ =
                 zStart + tz * lengthPerChunk;
+
 
             for (int a = 0; a <= angularResolution; a++)
             {
@@ -105,10 +110,97 @@ public class CylinderWindowChunk : MonoBehaviour
             }
         }
 
+
+        //each of these is an end cap
         int t = 0;
+        for (int a = 0; a < angularResolution; a++)
+        {
+            int innerCurrent = a;
+            int innerNext = a + 1;
+
+            int outerCurrent = innerCurrent + vertsPerSurface;
+            int outerNext = innerNext + vertsPerSurface;
+
+            // two triangles
+            triangles[t++] = innerCurrent;
+            triangles[t++] = innerNext;
+            triangles[t++] = outerCurrent;
+
+            triangles[t++] = outerCurrent;
+            triangles[t++] = innerNext;
+            triangles[t++] = outerNext;
+        }
+
+
+        int lastRowStart = longitudinalResolution * vertsAround;
+        for (int a = 0; a < angularResolution; a++)
+        {
+            int innerCurrent = lastRowStart + a;
+            int innerNext = lastRowStart + a + 1;
+
+            int outerCurrent = innerCurrent + vertsPerSurface;
+            int outerNext = innerNext + vertsPerSurface;
+
+            // two triangles
+            triangles[t++] = outerCurrent;
+            triangles[t++] = innerNext;
+            triangles[t++] = innerCurrent;
+
+
+            triangles[t++] = outerNext;
+            triangles[t++] = innerNext;
+            triangles[t++] = outerCurrent;
+        }
 
         for (int z = 0; z < longitudinalResolution; z++)
         {
+            int innerCurrent =
+                z * vertsAround;
+
+            int innerNext =
+                (z + 1) * vertsAround;
+
+            int outerCurrent =
+                innerCurrent + vertsPerSurface;
+
+            int outerNext =
+                innerNext + vertsPerSurface;
+
+            // reversed winding
+            triangles[t++] = outerCurrent;
+            triangles[t++] = innerNext;
+            triangles[t++] = innerCurrent;
+
+            triangles[t++] = outerNext;
+            triangles[t++] = innerNext;
+            triangles[t++] = outerCurrent;
+        }
+
+        //and because I hate anyone reading this, I put the last end cap in the final generation for the inside and outside of the cylinder
+        for (int z = 0; z < longitudinalResolution; z++)
+        {
+            //this orients the trianges. don't ask me how because I got it confused myself and had to rewrite this twice.
+            int innerCurrent =
+                z * vertsAround + angularResolution;
+
+            int innerNext =
+                (z + 1) * vertsAround + angularResolution;
+
+            int outerCurrent =
+                innerCurrent + vertsPerSurface;
+
+            int outerNext =
+                innerNext + vertsPerSurface;
+
+            //??? I MEAN IF IT WORKS
+            triangles[t++] = innerCurrent;
+            triangles[t++] = innerNext;
+            triangles[t++] = outerCurrent;
+
+            triangles[t++] = outerCurrent;
+            triangles[t++] = innerNext;
+            triangles[t++] = outerNext;
+
             for (int a = 0; a < angularResolution; a++)
             {
                 int i =
@@ -117,7 +209,7 @@ public class CylinderWindowChunk : MonoBehaviour
                 int nextRow =
                     i + vertsAround;
 
-                // I'm gonna be real, I don't really know how I figured this out, probably googled it...
+                // I'm gonna be real, Unity triangle orientation confuses me so much I just guessed until I got it right.
                 triangles[t++] = i;
                 triangles[t++] = nextRow;
                 triangles[t++] = i + 1;

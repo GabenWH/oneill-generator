@@ -101,20 +101,20 @@ public class CylinderChunkManager : MonoBehaviour
         MeshCollider collider =
             chunk.AddComponent<MeshCollider>();
 
-        CylinderWindowChunk cylinderChunk =
+        CylinderWindowChunk cylinderWindowChunk =
             chunk.AddComponent<CylinderWindowChunk>();
 
         renderer.material =
             glassMaterial;
 
-        cylinderChunk.Generate(
+        cylinderWindowChunk.Generate(
             world,
             a,
             z,
             angularChunks,
             longitudinalChunks,
             angularResolution,
-            longitudinalResolution
+            1
         );
     }
 }

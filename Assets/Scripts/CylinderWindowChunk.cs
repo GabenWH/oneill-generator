@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -7,6 +8,7 @@ public class CylinderWindowChunk : MonoBehaviour
 {
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
+    float glassThickness = 20f;
 
     public void Generate(
         ONeillWorld world,
@@ -22,13 +24,15 @@ public class CylinderWindowChunk : MonoBehaviour
 
         Mesh mesh = new Mesh();
         mesh.name =
-            $"Cylinder_{angularIndex}_{longitudinalIndex}";
+            $"WindowCylinder_{angularIndex}_{longitudinalIndex}";
 
         int vertsAround = angularResolution + 1;
         int vertsLong = longitudinalResolution + 1;
 
+
+        int vertsPerSurface = vertsAround * vertsLong;
         Vector3[] vertices =
-            new Vector3[vertsAround * vertsLong];
+            new Vector3[vertsPerSurface * 2];
 
         Vector2[] uvs =
             new Vector2[vertices.Length];
@@ -37,9 +41,11 @@ public class CylinderWindowChunk : MonoBehaviour
             new int[
                 angularResolution *
                 longitudinalResolution *
-                6
+                6 * 2
             ];
 
+
+        //a fuck ton of math I forgot to comment idk take highschool trig again and then explain it to me I was high when I wrote this :P
         float anglePerChunk =
             Mathf.PI * 2f / angularChunkCount;
 
@@ -71,24 +77,22 @@ public class CylinderWindowChunk : MonoBehaviour
                 float angle =
                     angleStart + ta * anglePerChunk;
 
-                // Gentle terrain displacement.
-                float noise =
-                    Mathf.PerlinNoise(
-                        angle * 3f + 100f,
-                        worldZ * 0.0005f + 100f
-                    );
-
-                float terrainHeight =
-                    (noise - 0.5f) * 100f;
-
-                // Terrain grows inward from the nominal
-                // cylinder radius.
-                float r =
+                // Giving the window inner verts
+                //basically I take the inside of the oneill and then use the radius and angle to calculate their x,y,z relative to the cylinder
+                float innerRadius =
                     world.radius;
 
                 vertices[v] = new Vector3(
-                    Mathf.Cos(angle) * r,
-                    Mathf.Sin(angle) * r,
+                    Mathf.Cos(angle) * innerRadius,
+                    Mathf.Sin(angle) * innerRadius,
+                    worldZ
+                );
+
+                //now the outter
+                float outerRadius = world.radius + glassThickness;
+                vertices[v + vertsPerSurface] = new Vector3(
+                    Mathf.Cos(angle) * outerRadius,
+                    Mathf.Sin(angle) * outerRadius,
                     worldZ
                 );
 
@@ -96,7 +100,7 @@ public class CylinderWindowChunk : MonoBehaviour
                     ta,
                     tz
                 );
-
+                uvs[v + vertsPerSurface] = uvs[v];
                 v++;
             }
         }
@@ -113,7 +117,7 @@ public class CylinderWindowChunk : MonoBehaviour
                 int nextRow =
                     i + vertsAround;
 
-                // Winding faces inward so the cylinder is visible from inside.
+                // I'm gonna be real, I don't really know how I figured this out, probably googled it...
                 triangles[t++] = i;
                 triangles[t++] = nextRow;
                 triangles[t++] = i + 1;
@@ -121,6 +125,20 @@ public class CylinderWindowChunk : MonoBehaviour
                 triangles[t++] = i + 1;
                 triangles[t++] = nextRow;
                 triangles[t++] = nextRow + 1;
+
+
+                //we take the vertex surfaces from the inside but because they're on the outsied we reverse the winding because they're outside verts not inside verts, I'm very smart
+                int outerI = i + vertsPerSurface;
+                int outerNextRow = nextRow + vertsPerSurface;
+
+                triangles[t++] = outerI;
+                triangles[t++] = outerI + 1;
+                triangles[t++] = outerNextRow;
+
+                triangles[t++] = outerI + 1;
+                triangles[t++] = outerNextRow + 1;
+                triangles[t++] = outerNextRow;
+                //see, order is a little crooked from the previous one, thats because its on the outside. Explaining this though is like rotating an apple in your brain, you have to be trans to get it.
             }
         }
 
@@ -128,6 +146,7 @@ public class CylinderWindowChunk : MonoBehaviour
         mesh.triangles = triangles;
         mesh.uv = uvs;
 
+        //I love unity sometimes.
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
 

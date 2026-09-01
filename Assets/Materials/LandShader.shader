@@ -6,6 +6,10 @@ Shader "Custom/LandShader"
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
+        _ValleyLandStepdown("Valley To Land Start",Range(0,1))=0.4
+        _ValleyLandStepup("Valley To Land End",Range(0,1))=0.6
+        _LandPeakStepdown("Land to Peak Start",Range(0,1))=0.4
+        _LandPeakStepup("Land to Peak End",Range(0,1))=0.6
         _ValleyColor ("Valley Color", Color)= (0.08, 0.25,0.10,1)
         _LandColor ("Land Color", Color)= (0.25,0.50,15,1)
         _PeakColor ("Peak Color", Color)= (0.45, 0.30, 0.20, 1)
@@ -28,7 +32,13 @@ Shader "Custom/LandShader"
         {
             float2 uv_MainTex;
             fixed4 color : COLOR;
+            float3 worldPos;
+            float3 worldNormal;
         };
+        half _ValleyLandStepdown;
+        half _ValleyLandStepup;
+        half _LandPeakStepdown;
+        half _LandPeakStepup;
         fixed4 _ValleyColor;
         fixed4 _LandColor;
         fixed4 _PeakColor;
@@ -47,10 +57,11 @@ Shader "Custom/LandShader"
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
             float height = IN.color.r;
-            fixed3 terrainColor = 
-                height< 0.5
-                ? lerp(_ValleyColor.rgb, _LandColor.rgb, height*2.0) 
-                : lerp(_LandColor.rgb,_PeakColor.rgb, (height-0.5)*2.0);
+            float lowlandTransition = smoothstep(_ValleyLandStepdown,_ValleyLandStepup,height);
+            float peakTransition = smoothstep(_LandPeakStepdown,_LandPeakStepup,height);
+            fixed3 terrainColor = lerp(_ValleyColor.rgb, _LandColor.rgb, lowlandTransition);
+            terrainColor = lerp(terrainColor,_PeakColor.rgb,peakTransition);
+
 
             o.Albedo = terrainColor;
             // Metallic and smoothness come from slider variables

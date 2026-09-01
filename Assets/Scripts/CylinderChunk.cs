@@ -80,7 +80,7 @@ public class CylinderChunk : MonoBehaviour
                     );
 
                 float terrainHeight =
-                    (noise - 0.5f) * 100f;
+                    (noise - 0.5f) * 500f;
 
                 // Terrain grows inward from the nominal
                 // cylinder radius.

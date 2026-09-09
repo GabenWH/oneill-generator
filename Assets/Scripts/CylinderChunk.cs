@@ -9,6 +9,7 @@ public class CylinderChunk : MonoBehaviour
 {
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
+    protected String MeshString = "Cylinder";
 
     public void Generate(
         ONeillWorld world,
@@ -24,7 +25,7 @@ public class CylinderChunk : MonoBehaviour
 
         Mesh mesh = new Mesh();
         mesh.name =
-            $"Cylinder_{angularIndex}_{longitudinalIndex}";
+            $"{MeshString}_{angularIndex}_{longitudinalIndex}";
 
         int vertsAround = angularResolution + 1;
         int vertsLong = longitudinalResolution + 1;
@@ -55,55 +56,7 @@ public class CylinderChunk : MonoBehaviour
             longitudinalIndex * lengthPerChunk;
 
         int v = 0;
-
-        for (int z = 0; z <= longitudinalResolution; z++)
-        {
-            float tz =
-                z / (float)longitudinalResolution;
-
-            float worldZ =
-                zStart + tz * lengthPerChunk;
-
-            for (int a = 0; a <= angularResolution; a++)
-            {
-                float ta =
-                    a / (float)angularResolution;
-
-                float angle =
-                    angleStart + ta * anglePerChunk;
-
-                // Gentle terrain displacement.
-                float noise =
-                    Mathf.PerlinNoise(
-                        angle * 3f + 100f,
-                        worldZ * 0.0005f + 100f
-                    );
-
-                float terrainHeight =
-                    (noise - 0.5f) * 500f;
-
-                // Terrain grows inward from the nominal
-                // cylinder radius.
-                float r =
-                    world.radius - terrainHeight;
-
-                vertices[v] = new Vector3(
-                    Mathf.Cos(angle) * r,
-                    Mathf.Sin(angle) * r,
-                    worldZ
-                );
-
-                float heightForShader = Mathf.InverseLerp(-50f,50f,terrainHeight);
-                colors[v] = new Color(heightForShader,0f,0f,1f);
-
-                uvs[v] = new Vector2(
-                    ta,
-                    tz
-                );
-
-                v++;
-            }
-        }
+        v = GenerateTerrain(world, angularResolution, longitudinalResolution, vertices, colors, uvs, anglePerChunk, lengthPerChunk, angleStart, zStart, v);
 
         int t = 0;
 
@@ -138,5 +91,59 @@ public class CylinderChunk : MonoBehaviour
 
         meshFilter.sharedMesh = mesh;
         meshCollider.sharedMesh = mesh;
+
+        static int GenerateTerrain(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float anglePerChunk, float lengthPerChunk, float angleStart, float zStart, int v)
+        {
+            for (int z = 0; z <= longitudinalResolution; z++)
+            {
+                float tz =
+                    z / (float)longitudinalResolution;
+
+                float worldZ =
+                    zStart + tz * lengthPerChunk;
+
+                for (int a = 0; a <= angularResolution; a++)
+                {
+                    float ta =
+                        a / (float)angularResolution;
+
+                    float angle =
+                        angleStart + ta * anglePerChunk;
+
+                    // Gentle terrain displacement.
+                    float noise =
+                        Mathf.PerlinNoise(
+                            angle * 3f + 100f,
+                            worldZ * 0.0005f + 100f
+                        );
+
+                    float terrainHeight =
+                        (noise - 0.5f) * 500f;
+
+                    // Terrain grows inward from the nominal
+                    // cylinder radius.
+                    float r =
+                        world.radius - terrainHeight;
+
+                    vertices[v] = new Vector3(
+                        Mathf.Cos(angle) * r,
+                        Mathf.Sin(angle) * r,
+                        worldZ
+                    );
+
+                    float heightForShader = Mathf.InverseLerp(-50f, 50f, terrainHeight);
+                    colors[v] = new Color(heightForShader, 0f, 0f, 1f);
+
+                    uvs[v] = new Vector2(
+                        ta,
+                        tz
+                    );
+
+                    v++;
+                }
+            }
+
+            return v;
+        }
     }
 }

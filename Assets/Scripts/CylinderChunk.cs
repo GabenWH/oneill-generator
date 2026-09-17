@@ -54,9 +54,11 @@ public class CylinderChunk : MonoBehaviour
         float zStart =
             -world.length * 0.5f +
             longitudinalIndex * lengthPerChunk;
+        float angleStep = anglePerChunk/angularResolution;
+        float zStep = lengthPerChunk/longitudinalResolution;
 
         int v = 0;
-        v = GenerateTerrain(world, angularResolution, longitudinalResolution, vertices, colors, uvs, anglePerChunk, lengthPerChunk, angleStart, zStart, v);
+        v = GenerateInnerSurface(world, angularResolution, longitudinalResolution, vertices, colors, uvs, angleStep, zStep, angleStart, zStart, v);
 
         int t = 0;
 
@@ -91,59 +93,15 @@ public class CylinderChunk : MonoBehaviour
 
         meshFilter.sharedMesh = mesh;
         meshCollider.sharedMesh = mesh;
-
-        static int GenerateTerrain(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float anglePerChunk, float lengthPerChunk, float angleStart, float zStart, int v)
-        {
-            for (int z = 0; z <= longitudinalResolution; z++)
-            {
-                float tz =
-                    z / (float)longitudinalResolution;
-
-                float worldZ =
-                    zStart + tz * lengthPerChunk;
-
-                for (int a = 0; a <= angularResolution; a++)
-                {
-                    float ta =
-                        a / (float)angularResolution;
-
-                    float angle =
-                        angleStart + ta * anglePerChunk;
-
-                    // Gentle terrain displacement.
-                    float noise =
-                        Mathf.PerlinNoise(
-                            angle * 3f + 100f,
-                            worldZ * 0.0005f + 100f
-                        );
-
-                    float terrainHeight =
-                        (noise - 0.5f) * 500f;
-
-                    // Terrain grows inward from the nominal
-                    // cylinder radius.
-                    float r =
-                        world.radius - terrainHeight;
-
-                    vertices[v] = new Vector3(
-                        Mathf.Cos(angle) * r,
-                        Mathf.Sin(angle) * r,
-                        worldZ
-                    );
-
-                    float heightForShader = Mathf.InverseLerp(-50f, 50f, terrainHeight);
-                    colors[v] = new Color(heightForShader, 0f, 0f, 1f);
-
-                    uvs[v] = new Vector2(
-                        ta,
-                        tz
-                    );
-
-                    v++;
-                }
-            }
-
-            return v;
-        }
+    }
+    protected abstract int GenerateInnerSurface(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float angleStep, float zStep, float angleStart, float zStart, int v)
+    {
+        //Generate inner verts
+        //Return next vertex int
+    }
+    protected abstract int GenerateBottom(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float anglePerChunk, float lengthPerChunk, float angleStart, float zStart, int v)
+    {
+        //Generate outer verts
+        //return next vertex int
     }
 }

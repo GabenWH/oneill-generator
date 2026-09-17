@@ -4,8 +4,6 @@ Shader "Custom/GlassShader"
     {
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.0
         _Tint ("Tint", Color) = (0.5, 0.65, 0.7, 1)
         _BaseAlpha ("Base Alpha", Range(0,1)) = 0.02
         _EdgeAlpha ("Edge Alpha", Range(0,1)) = 0.4
@@ -27,11 +25,8 @@ Shader "Custom/GlassShader"
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
-        sampler2D _MainTex;
-
         struct Input
         {
-            float2 uv_MainTex;
             float3 worldPos;
             float3 worldNormal;
         };

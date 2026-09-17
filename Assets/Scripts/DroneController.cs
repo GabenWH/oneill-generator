@@ -15,11 +15,51 @@ public class DroneController : MonoBehaviour
     public float linearDrag = 0.15f;
     public float angularDrag = 2f;
 
+    [Header("HUD")]
+    public bool showSpeedometer = true;
+
     [Header("Thrusters")]
     public ParticleSystem leftThruster;
     public ParticleSystem rightThruster;
 
     private Rigidbody rb;
+    private GUIStyle speedStyle;
+    private GUIStyle speedCaptionStyle;
+
+    private void OnGUI()
+    {
+        if (!showSpeedometer || rb == null)
+            return;
+
+        if (speedStyle == null)
+        {
+            speedStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 28,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleLeft
+            };
+            speedStyle.normal.textColor = Color.white;
+            speedCaptionStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                alignment = TextAnchor.MiddleLeft
+            };
+            speedCaptionStyle.normal.textColor = new Color(0.7f, 0.85f, 0.9f);
+        }
+
+        // Physics runs in the habitat's rotating frame, so Rigidbody velocity
+        // already measures motion relative to the habitat, in metres/second.
+        float speed = rb.velocity.magnitude;
+        float top = Mathf.Max(0f, Screen.height - 116f);
+        GUI.Box(new Rect(20f, top, 260f, 96f), GUIContent.none);
+        GUI.Label(new Rect(34f, top + 8f, 232f, 20f),
+            "SPEED / HABITAT RELATIVE", speedCaptionStyle);
+        GUI.Label(new Rect(34f, top + 28f, 232f, 36f),
+            $"{speed:F1} m/s", speedStyle);
+        GUI.Label(new Rect(34f, top + 66f, 232f, 20f),
+            $"{speed * 3.6f:F1} km/h", speedCaptionStyle);
+    }
 
     private void Awake()
     {

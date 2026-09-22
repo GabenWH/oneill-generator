@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
-public class CylinderChunk : MonoBehaviour
+public abstract class CylinderChunk : MonoBehaviour
 {
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
@@ -54,8 +54,8 @@ public class CylinderChunk : MonoBehaviour
         float zStart =
             -world.length * 0.5f +
             longitudinalIndex * lengthPerChunk;
-        float angleStep = anglePerChunk/angularResolution;
-        float zStep = lengthPerChunk/longitudinalResolution;
+        float angleStep = anglePerChunk / angularResolution;
+        float zStep = lengthPerChunk / longitudinalResolution;
 
         int v = 0;
         v = GenerateInnerSurface(world, angularResolution, longitudinalResolution, vertices, colors, uvs, angleStep, zStep, angleStart, zStart, v);
@@ -84,7 +84,29 @@ public class CylinderChunk : MonoBehaviour
         }
 
         mesh.vertices = vertices;
-        mesh.triangles = triangles;
+        /*
+        mesh.triangles = triangles; for (int z = 0; z < longitudinalResolution; z++)
+        {
+            for (int a = 0; a < angularResolution; a++)
+            {
+                int i =
+                    z * vertsAround + a;
+
+                int nextRow =
+                    i + vertsAround;
+
+                // Winding faces inward so the cylinder is visible from inside.
+                triangles[t++] = i;
+                triangles[t++] = nextRow;
+                triangles[t++] = i + 1;
+
+                triangles[t++] = i + 1;
+                triangles[t++] = nextRow;
+                triangles[t++] = nextRow + 1;
+            }
+        }
+        */
+
         mesh.uv = uvs;
         mesh.colors = colors;
 
@@ -93,15 +115,35 @@ public class CylinderChunk : MonoBehaviour
 
         meshFilter.sharedMesh = mesh;
         meshCollider.sharedMesh = mesh;
+        v = 0;
+        Vector3[] bottomVerts =
+            new Vector3[vertsAround * vertsLong];
+        Color[] bottomColors =
+            new Color[bottomVerts.Length];
+
+        Vector2[] bottomUVs =
+            new Vector2[bottomVerts.Length];
+        int[] bottomTriangles =
+            new int[
+                angularResolution *
+                longitudinalResolution *
+                6
+            ];
+
+
+
+
+        v = GenerateBottom(world, angularResolution, longitudinalResolution, bottomVerts, bottomColors, bottomUVs, angleStep, zStep, angleStart, zStart, v);
+        if (v > 0)
+        {
+
+        }
+
     }
-    protected abstract int GenerateInnerSurface(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float angleStep, float zStep, float angleStart, float zStart, int v)
-    {
-        //Generate inner verts
-        //Return next vertex int
-    }
-    protected abstract int GenerateBottom(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float anglePerChunk, float lengthPerChunk, float angleStart, float zStart, int v)
-    {
-        //Generate outer verts
-        //return next vertex int
-    }
+    protected abstract int GenerateInnerSurface(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float angleStep, float zStep, float angleStart, float zStart, int v);
+    //Generate inner verts
+    //Return next vertex int
+    protected abstract int GenerateBottom(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float angleStep, float zStep, float angleStart, float zStart, int v);
+    //Generate outer verts
+    //return next vertex int
 }

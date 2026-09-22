@@ -61,8 +61,8 @@ public class CylinderChunkManager : MonoBehaviour
                 MeshCollider collider =
                     chunk.AddComponent<MeshCollider>();
 
-                CylinderChunk cylinderChunk =
-                    chunk.AddComponent<CylinderChunk>();
+                LandChunk cylinderChunk =
+                    chunk.AddComponent<LandChunk>();
 
                 renderer.material =
                     landMaterial;

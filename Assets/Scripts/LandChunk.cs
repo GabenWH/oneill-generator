@@ -17,13 +17,13 @@ public class LandChunk : CylinderChunk
         {
 
             float worldZ =
-                zStart + zStep * lengthPerChunk;
+                zStart + zStep * z;
 
             for (int a = 0; a <= angularResolution; a++)
             {
 
                 float angle =
-                    angleStart + angleStep * anglePerChunk;
+                    angleStart + angleStep * a;
 
                 // Gentle terrain displacement.
                 float noise =
@@ -49,9 +49,12 @@ public class LandChunk : CylinderChunk
                 float heightForShader = Mathf.InverseLerp(-50f, 50f, terrainHeight);
                 colors[v] = new Color(heightForShader, 0f, 0f, 1f);
 
+                //I tried to make it simpler, but I just made it harder🥺
+                float u = a/(float)angularResolution;
+                float uZ = z/(float)longitudinalResolution;
                 uvs[v] = new Vector2(
-                    angleStep,
-                    zStep
+                    u,
+                    uZ
                 );
 
                 v++;
@@ -60,5 +63,8 @@ public class LandChunk : CylinderChunk
 
         return v;
     }
-    protected override int GenerateBottom(){}
+    protected override int GenerateBottom(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float anglePerChunk, float lengthPerChunk, float angleStart, float zStart, int v)
+    {
+        return v;
+    }
 }

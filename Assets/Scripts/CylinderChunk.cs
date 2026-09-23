@@ -84,28 +84,8 @@ public abstract class CylinderChunk : MonoBehaviour
         }
 
         mesh.vertices = vertices;
-        /*
-        mesh.triangles = triangles; for (int z = 0; z < longitudinalResolution; z++)
-        {
-            for (int a = 0; a < angularResolution; a++)
-            {
-                int i =
-                    z * vertsAround + a;
+        mesh.triangles = triangles;
 
-                int nextRow =
-                    i + vertsAround;
-
-                // Winding faces inward so the cylinder is visible from inside.
-                triangles[t++] = i;
-                triangles[t++] = nextRow;
-                triangles[t++] = i + 1;
-
-                triangles[t++] = i + 1;
-                triangles[t++] = nextRow;
-                triangles[t++] = nextRow + 1;
-            }
-        }
-        */
 
         mesh.uv = uvs;
         mesh.colors = colors;
@@ -136,6 +116,26 @@ public abstract class CylinderChunk : MonoBehaviour
         v = GenerateBottom(world, angularResolution, longitudinalResolution, bottomVerts, bottomColors, bottomUVs, angleStep, zStep, angleStart, zStart, v);
         if (v > 0)
         {
+            for (int z = 0; z < longitudinalResolution; z++)
+            {
+                for (int a = 0; a < angularResolution; a++)
+                {
+                    int i =
+                        z * vertsAround + a;
+
+                    int nextRow =
+                        i + vertsAround;
+
+                    // Winding faces inward so the cylinder is visible from inside.
+                    bottomTriangles[t++] = i;
+                    bottomTriangles[t++] = i + 1;
+                    bottomTriangles[t++] = nextRow;
+
+                    bottomTriangles[t++] = i + 1;
+                    bottomTriangles[t++] = nextRow + 1;
+                    bottomTriangles[t++] = nextRow;
+                }
+            }
 
         }
 

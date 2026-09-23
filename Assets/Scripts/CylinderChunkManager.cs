@@ -78,6 +78,30 @@ public class CylinderChunkManager : MonoBehaviour
                 );
             }
         }
+        GameObject endCapA = new GameObject("EndCap_A");
+        endCapA.transform.SetParent(transform,false);
+
+        GameObject endCapB = new GameObject("EndCap_B");
+        endCapB.transform.SetParent(transform,false);
+
+        endCapA.AddComponent<MeshFilter>();
+        endCapA.AddComponent<MeshRenderer>().material = glassMaterial;
+
+        endCapB.AddComponent<MeshFilter>();
+        endCapB.AddComponent<MeshRenderer>().material = glassMaterial;
+
+        CylinderEndCap capA = endCapA.AddComponent<CylinderEndCap>();
+        CylinderEndCap capB = endCapB.AddComponent<CylinderEndCap>();
+
+        endCapA.transform.localPosition = new Vector3(0f,0f,world.length * 0.5f);
+        endCapB.transform.localPosition = new Vector3(0f,0f,world.length * -0.5f);
+
+        capA.Generate(world.radius,16,64,100f,false);
+        capB.Generate(world.radius,16,64,100f,true);
+
+
+
+
     }
 
     private void GenerateWindow(int a, int z)

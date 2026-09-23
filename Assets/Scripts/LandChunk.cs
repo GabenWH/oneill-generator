@@ -2,14 +2,8 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshCollider))]
 public class LandChunk : CylinderChunk
 {
-    private MeshFilter meshFilter;
-    private MeshCollider meshCollider;
-    protected String MeshString = "Cylinder";
 
     protected override int GenerateInnerSurface(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float angleStep, float zStep, float angleStart, float zStart, int v)
     {

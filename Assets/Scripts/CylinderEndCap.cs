@@ -21,7 +21,8 @@ public class CylinderEndCap : MonoBehaviour
         int triCount = resolution + (radialRes - 1) * resolution * 2;
         int[] tris = new int[triCount * 3];
 
-        verts[0] = new Vector3(0f, 0f, -depth);
+        float zDirection = facesPositiveZ ? 1f : -1f;
+        verts[0] = new Vector3(0f, 0f, zDirection * depth);
 
         for (int i = 0; i < resolution; i++)
         {
@@ -31,12 +32,22 @@ public class CylinderEndCap : MonoBehaviour
                 int index = 1 + j * resolution + i;
                 float normalizedRadius = (j + 1) / (float)radialRes;
                 float currentRadius = normalizedRadius * radius;
-                verts[index] = new Vector3(MathF.Cos(angle) * currentRadius, Mathf.Sin(angle) * currentRadius, -depth * (1f - Mathf.Pow(normalizedRadius, 2f)));
+                verts[index] = new Vector3(MathF.Cos(angle) * currentRadius, Mathf.Sin(angle) * currentRadius, zDirection*depth * (1f - Mathf.Pow(normalizedRadius, 2f)));
             }
 
         }
 
         int t = 0;
+        for (int i = 0; i < resolution; i++)
+        {
+            int current = 1 + i;
+            int next = 1 + ((i + 1) % resolution);
+
+            tris[t++] = 0;
+            tris[t++] = facesPositiveZ ? current : next;
+            tris[t++] = facesPositiveZ ? next : current;
+        }
+
         for (int j = 0; j < radialRes - 1; j++)
         {
             for (int i = 0; i < resolution; i++)
@@ -66,13 +77,12 @@ public class CylinderEndCap : MonoBehaviour
                 else
                 {
 
-                    tris[t++] = next;
                     tris[t++] = current;
+                    tris[t++] = next;
                     tris[t++] = outerCurrent;
 
-
-                    tris[t++] = outerNext;
                     tris[t++] = next;
+                    tris[t++] = outerNext;
                     tris[t++] = outerCurrent;
                 }
             }

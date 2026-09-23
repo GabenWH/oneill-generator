@@ -21,14 +21,16 @@ public class CylinderEndCap : MonoBehaviour
         int[] tris = new int[resolution*3*radialRes];
 
         verts[0] = Vector3.zero;
-
+    
         for (int i = 0; i < resolution; i++)
         {
-            float normalizedRadius = radius / (float)radialRes;
             float angle = (i / (float)resolution) * Mathf.PI * 2f;
-            for (int j = 1; j < radialRes; j++)
+            for (int j = 0; j < radialRes; j++)
             {
-                verts[i + 1] = new Vector3(MathF.Cos(angle) * radius*(1-(j-radialRes)), Mathf.Sin(angle) * radius*(1-(j-radialRes)), -depth * (1f - Mathf.Pow(normalizedRadius, 2f)));
+                int index = 1+j * resolution+i;
+                float normalizedRadius = j / (float)radialRes;
+                float currentRadius = normalizedRadius*radius;
+                verts[index] = new Vector3(MathF.Cos(angle) * currentRadius, Mathf.Sin(angle) * currentRadius, -depth * (1f - Mathf.Pow(normalizedRadius, 2f)));
             }
 
         }

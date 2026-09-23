@@ -8,7 +8,7 @@ using UnityEngine;
 public class CylinderEndCap : MonoBehaviour
 {
     // Start is called before the first frame update
-    
+
 
     public void Generate(float radius, int radialRes, int resolution, float depth, bool facesPositiveZ)
     {
@@ -17,43 +17,67 @@ public class CylinderEndCap : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.name = "CylinderEndCap";
 
-        Vector3[] verts = new Vector3[resolution*radialRes+1];
-        int[] tris = new int[resolution*3*radialRes];
+        Vector3[] verts = new Vector3[resolution * radialRes + 1];
+        int triCount = resolution + (radialRes - 1) * resolution * 2;
+        int[] tris = new int[triCount * 3];
 
-        verts[0] = Vector3.zero;
-    
+        verts[0] = new Vector3(0f, 0f, -depth);
+
         for (int i = 0; i < resolution; i++)
         {
             float angle = (i / (float)resolution) * Mathf.PI * 2f;
             for (int j = 0; j < radialRes; j++)
             {
-                int index = 1+j * resolution+i;
-                float normalizedRadius = j / (float)radialRes;
-                float currentRadius = normalizedRadius*radius;
+                int index = 1 + j * resolution + i;
+                float normalizedRadius = (j + 1) / (float)radialRes;
+                float currentRadius = normalizedRadius * radius;
                 verts[index] = new Vector3(MathF.Cos(angle) * currentRadius, Mathf.Sin(angle) * currentRadius, -depth * (1f - Mathf.Pow(normalizedRadius, 2f)));
             }
 
         }
 
         int t = 0;
-        for (int i = 0; i< resolution; i++)
+        for (int j = 0; j < radialRes - 1; j++)
         {
-            int current = i+1;
-            int next = ((i+1) % resolution) + 1;
+            for (int i = 0; i < resolution; i++)
+            {
+                int current = i + j * resolution + 1;
+                int next =
+                    1 + j * resolution +
+                    ((i + 1) % resolution);
 
-            if (facesPositiveZ)
-            {
-                tris[t++] = 0;
-                tris[t++] = current;
-                tris[t++] = next;
-            }
-            else
-            {
-                tris[t++]=0;
-                tris[t++]=next;
-                tris[t++]=current;
+                int outerCurrent =
+                    1 + (j + 1) * resolution + i;
+
+                int outerNext =
+                    1 + (j + 1) * resolution +
+                    ((i + 1) % resolution);
+
+                if (facesPositiveZ)
+                {
+                    tris[t++] = current;
+                    tris[t++] = outerCurrent;
+                    tris[t++] = next;
+
+                    tris[t++] = next;
+                    tris[t++] = outerCurrent;
+                    tris[t++] = outerNext;
+                }
+                else
+                {
+
+                    tris[t++] = next;
+                    tris[t++] = current;
+                    tris[t++] = outerCurrent;
+
+
+                    tris[t++] = outerNext;
+                    tris[t++] = next;
+                    tris[t++] = outerCurrent;
+                }
             }
         }
+
         mesh.vertices = verts;
         mesh.triangles = tris;
 

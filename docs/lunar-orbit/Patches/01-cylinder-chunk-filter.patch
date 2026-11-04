@@ -1,0 +1,11 @@
+--- a/Assets/Scripts/DroneController.cs
++++ b/Assets/Scripts/DroneController.cs
+@@ -14,7 +14,7 @@
+         for (int i = 0; i < count; i++)
+         {
+             RaycastHit hit = groundHits[i];
+-            if (hit.collider.GetComponent<LandChunk>() == null) continue;
++            if (hit.collider.GetComponent<CylinderChunk>() == null) continue;
+             Vector3 surfaceRadius = hit.point - world.transform.position;
+             surfaceRadius.z = 0f;
+             // Submerged terrain is handled by the water simulation instead.

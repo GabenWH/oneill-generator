@@ -1,0 +1,12 @@
+--- a/Assets/Scripts/DroneController.cs
++++ b/Assets/Scripts/DroneController.cs
+@@ -18,7 +18,8 @@
+             Vector3 surfaceRadius = hit.point - world.transform.position;
+             surfaceRadius.z = 0f;
+             // Submerged terrain is handled by the water simulation instead.
+-            if (surfaceRadius.magnitude >= world.WaterRadius) continue;
++            if (hit.collider.GetComponent<LandChunk>() != null &&
++                surfaceRadius.magnitude >= world.WaterRadius) continue;
+             closest = Mathf.Min(closest, hit.distance);
+         }
+         float speed = Vector3.Dot(rb.velocity, -down);

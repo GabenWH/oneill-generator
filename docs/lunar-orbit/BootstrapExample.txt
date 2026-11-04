@@ -1,0 +1,16 @@
+// MERGE EXAMPLE ONLY. Do not replace WorldBootstrap.cs with this file.
+// Add this field to your current bootstrap and assign the shader in the Inspector:
+public Shader lunarSkyShader;
+
+// After your existing code creates world, drone/camera, and its directional Sun:
+var orbitalSky = new GameObject("Lunar Orbit Sky")
+    .AddComponent<GraceLunarOrbit.LunarOrbitSky>();
+orbitalSky.habitatOrigin = world.transform;
+orbitalSky.habitatCamera = drone.GetComponentInChildren<Camera>();
+orbitalSky.sunlight = sun;
+orbitalSky.skyShader = lunarSkyShader;
+orbitalSky.habitatRadiusMetres = world.radius;
+orbitalSky.surfaceGravity = world.surfaceGravity;
+orbitalSky.altitudeMetres = 100000f; // Editable preview default, not an agreed altitude.
+// Assign orbitalSky.moonAlbedo if you've imported the optional NASA map.
+// Fields/variable names above are from c00e98f's older bootstrap: adapt to your current file.

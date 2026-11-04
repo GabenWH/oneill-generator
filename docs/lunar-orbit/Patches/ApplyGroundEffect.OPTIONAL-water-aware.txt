@@ -1,0 +1,29 @@
+    private void ApplyGroundEffect()
+    {
+        if (cylinderGravity == null) cylinderGravity = GetComponent<CylinderGravity>();
+        ONeillWorld world = cylinderGravity != null ? cylinderGravity.world : null;
+        if (world == null || groundEffectRange <= 0f) return;
+
+        Vector3 radial = rb.position - world.transform.position;
+        radial.z = 0f;
+        if (radial.sqrMagnitude < .001f) return;
+        Vector3 down = radial.normalized;
+        int count = Physics.RaycastNonAlloc(rb.position, down, groundHits, groundEffectRange,
+            Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        float closest = groundEffectRange;
+        for (int i = 0; i < count; i++)
+        {
+            RaycastHit hit = groundHits[i];
+            if (hit.collider.GetComponent<CylinderChunk>() == null) continue;
+            Vector3 surfaceRadius = hit.point - world.transform.position;
+            surfaceRadius.z = 0f;
+            // Submerged terrain is handled by the water simulation instead.
+            if (hit.collider.GetComponent<LandChunk>() != null &&
+                surfaceRadius.magnitude >= world.WaterRadius) continue;
+            closest = Mathf.Min(closest, hit.distance);
+        }
+        float speed = Vector3.Dot(rb.velocity, -down);
+        float acceleration = GroundEffectAcceleration(closest, speed, groundEffectRange,
+            groundEffectLift, groundEffectDamping);
+        rb.AddForce(-down * acceleration, ForceMode.Acceleration);
+    }

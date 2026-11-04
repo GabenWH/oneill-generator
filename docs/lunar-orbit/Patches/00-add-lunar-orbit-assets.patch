@@ -1,0 +1,1013 @@
+diff --git a/Assets/GraceLunarOrbit.meta b/Assets/GraceLunarOrbit.meta
+new file mode 100644
+index 0000000..b700e1d
+--- /dev/null
++++ b/Assets/GraceLunarOrbit.meta
+@@ -0,0 +1,8 @@
++fileFormatVersion: 2
++guid: 6486658480204321a2f1a75e0af4bf2a
++folderAsset: yes
++DefaultImporter:
++  externalObjects: {}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Editor.meta b/Assets/GraceLunarOrbit/Editor.meta
+new file mode 100644
+index 0000000..03762bf
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Editor.meta
+@@ -0,0 +1,8 @@
++fileFormatVersion: 2
++guid: 9b513a84b78a8f976e14fe1cd2ba9273
++folderAsset: yes
++DefaultImporter:
++  externalObjects: {}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Editor/LunarOrbitChecks.cs b/Assets/GraceLunarOrbit/Editor/LunarOrbitChecks.cs
+new file mode 100644
+index 0000000..44b8847
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Editor/LunarOrbitChecks.cs
+@@ -0,0 +1,62 @@
++using System;
++using UnityEditor;
++using UnityEngine;
++
++namespace GraceLunarOrbit.Editor
++{
++    // No NUnit/Test Framework dependency. Run after Unity imports the package.
++    public static class LunarOrbitChecks
++    {
++        [MenuItem("Tools/Grace/Lunar Orbit/Run math and frame checks")]
++        public static void Run()
++        {
++            int checks = 0;
++            Action<double,double,double> near = (actual, expected, tolerance) =>
++            {
++                if (double.IsNaN(actual) || Math.Abs(actual-expected) > tolerance)
++                    throw new Exception($"Lunar orbit check failed: {actual} != {expected}");
++                checks++;
++            };
++            near(LunarOrbitMath.OrbitalPeriod(4904869500000.0,1837400.0),7065.968677733854,0.0001);
++            near(LunarOrbitMath.SpinRate(9.81,4000),0.04952272205765754,1e-12);
++            near(LunarOrbitMath.SunVisibility(0,0.5,0.01),0,1e-12);
++            near(LunarOrbitMath.SunVisibility(1,0.5,0.01),1,1e-12);
++            GameObject test = new GameObject("Temporary lunar test");
++            try
++            {
++                LunarOrbitSky orbit = test.AddComponent<LunarOrbitSky>();
++                orbit.enabled = false;
++                orbit.inclinationDegrees = 0;
++                orbit.simulationSeconds = 0;
++                orbit.EvaluatePose();
++                near(Vector3.Distance(orbit.StationPositionKm,new Vector3(1837.4f,0,0)),0,0.001);
++                orbit.simulationSeconds = orbit.OrbitPeriodSeconds/4.0;
++                orbit.EvaluatePose();
++                near(Vector3.Distance(orbit.StationPositionKm,new Vector3(0,1837.4f,0)),0,0.001);
++                orbit.simulationSeconds = orbit.SpinPeriodSeconds/4.0;
++                orbit.EvaluatePose();
++                near(Vector3.Distance(orbit.HabitatToInertial*Vector3.right,Vector3.up),0,0.0001);
++                near(Vector3.Distance(Quaternion.Inverse(orbit.HabitatToInertial)*Vector3.right,Vector3.down),0,0.0001);
++                orbit.inclinationDegrees=90;
++                orbit.simulationSeconds=orbit.OrbitPeriodSeconds/4.0;
++                orbit.EvaluatePose();
++                near(Vector3.Distance(orbit.StationPositionKm,new Vector3(0,0,1837.4f)),0,0.001);
++                Vector3 before=orbit.StationPositionKm;
++                test.transform.position=new Vector3(-4000f,2000f,1000f);
++                orbit.EvaluatePose();
++                near(Vector3.Distance(before,orbit.StationPositionKm),0,0.0001);
++                orbit.simulationSeconds = double.NaN;
++                bool invalidRejected = false;
++                try { orbit.EvaluatePose(); }
++                catch (ArgumentOutOfRangeException) { invalidRejected = true; }
++                if (!invalidRejected) throw new Exception("NaN time must be rejected before presenting the sky.");
++                checks++;
++                if (Shader.Find("Grace/Lunar Orbit Sky") == null || Shader.Find("Grace/Lunar Reference Surface") == null)
++                    throw new Exception("Lunar shaders are missing.");
++                checks++;
++                Debug.Log($"Lunar orbit: {checks} native math/frame/shader-presence checks passed. This does not establish rendering or flight compatibility.");
++            }
++            finally { UnityEngine.Object.DestroyImmediate(test); }
++        }
++    }
++}
+diff --git a/Assets/GraceLunarOrbit/Editor/LunarOrbitChecks.cs.meta b/Assets/GraceLunarOrbit/Editor/LunarOrbitChecks.cs.meta
+new file mode 100644
+index 0000000..052c7d4
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Editor/LunarOrbitChecks.cs.meta
+@@ -0,0 +1,11 @@
++fileFormatVersion: 2
++guid: 29a7343403d25e9c4afa233848f20b8b
++MonoImporter:
++  externalObjects: {}
++  serializedVersion: 2
++  defaultReferences: []
++  executionOrder: 0
++  icon: {instanceID: 0}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Runtime.meta b/Assets/GraceLunarOrbit/Runtime.meta
+new file mode 100644
+index 0000000..33e32b4
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Runtime.meta
+@@ -0,0 +1,8 @@
++fileFormatVersion: 2
++guid: fefac7e61ab3c89562b4d4eefd66813a
++folderAsset: yes
++DefaultImporter:
++  externalObjects: {}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Runtime/LunarOrbitDemo.cs b/Assets/GraceLunarOrbit/Runtime/LunarOrbitDemo.cs
+new file mode 100644
+index 0000000..fb2e082
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Runtime/LunarOrbitDemo.cs
+@@ -0,0 +1,202 @@
++using System;
++using UnityEngine;
++
++namespace GraceLunarOrbit
++{
++    // Separate visualization only: 1 scene unit = 1 km. Never attach this to a
++    // gameplay scene; it creates its own reference Moon, station and camera.
++    public sealed class LunarOrbitDemo : MonoBehaviour
++    {
++        public Texture2D moonAlbedo;
++        public Shader referenceSurfaceShader;
++        [Min(5000f)] public float altitudeMetres = 100000f;
++        [Min(1f)] public float stationRadiusMetres = 4000f;
++        [Min(1f)] public float stationLengthMetres = 32000f;
++        [Min(0f)] public float surfaceGravity = 9.81f;
++        [Min(0f)] public float timeMultiplier = 1f;
++        public float inclinationDegrees = 20f;
++        public Vector3 directionToSun = new Vector3(1f, 0.2f, 0.1f);
++        public bool enableMoonFill = true;
++        [Range(0f,0.2f)] public float moonFillIntensity = 0.04f;
++        public bool paused;
++        public double simulationSeconds;
++        private Transform station;
++        private Transform moon;
++        private Transform sunDisc;
++        private Camera view;
++        private Light sun;
++        private Light moonFill;
++        private readonly System.Collections.Generic.List<Material> materials =
++            new System.Collections.Generic.List<Material>();
++        private float yaw = 160f;
++        private float pitch = 20f;
++        private float cameraDistance = 65f;
++        private float lightVisibility = 1f;
++        private Renderer[] stationRenderers;
++        private MaterialPropertyBlock eclipse;
++
++        private Material Surface(string name, Color color, Texture texture = null, bool unlit = false)
++        {
++            Material material = new Material(referenceSurfaceShader);
++            material.name = name;
++            material.color = unlit ? Color.black : color;
++            material.SetColor("_EmissionColor", unlit ? color : Color.black);
++            if (texture != null) material.mainTexture = texture;
++
++            materials.Add(material);
++            return material;
++        }
++
++        private GameObject Primitive(string name, PrimitiveType shape, Transform parent, Material material)
++        {
++            GameObject go = GameObject.CreatePrimitive(shape);
++            go.name = name;
++            go.transform.SetParent(parent, false);
++            Destroy(go.GetComponent<Collider>());
++            go.GetComponent<Renderer>().sharedMaterial = material;
++            return go;
++        }
++
++        private void Start()
++        {
++            if (referenceSurfaceShader == null)
++            {
++                Debug.LogError("Assign Grace/Lunar Reference Surface before running the overview.", this);
++                enabled = false;
++                return;
++            }
++            Material lunar = Surface("Smooth Moon reference", Color.white, moonAlbedo);
++            if (moonAlbedo == null) lunar.color = new Color(0.38f, 0.38f, 0.37f);
++            moon = Primitive("Moon (smooth reference, no terrain)", PrimitiveType.Sphere, transform, lunar).transform;
++            moon.gameObject.layer = 2; // Separate reference Moon from the station-only fill.
++            moon.localScale = Vector3.one * (float)(2.0 * LunarOrbitMath.MoonRadius / 1000.0);
++            station = new GameObject("Station visual only").transform;
++            station.SetParent(transform, false);
++            Material frame = Surface("Ivory frame", new Color(0.8f, 0.76f, 0.59f));
++            Material land = Surface("Green habitat bands", new Color(0.25f, 0.5f, 0.2f));
++            Material marker = Surface("Orange spin marker", new Color(1f, 0.29f, 0.05f), null, true);
++            float radius = stationRadiusMetres / 1000f;
++            float length = stationLengthMetres / 1000f;
++            // Open cage with bands: a simplified scale marker, not the current station asset.
++            for (int i = 0; i < 12; i++)
++            {
++                float angle = i * Mathf.PI * 2f / 12f;
++                Transform beam = Primitive("Axial beam " + i, PrimitiveType.Cube, station,
++                    i == 0 ? marker : (i % 2 == 0 ? land : frame)).transform;
++                beam.localPosition = new Vector3(Mathf.Cos(angle)*radius, Mathf.Sin(angle)*radius, 0f);
++                beam.localRotation = Quaternion.AngleAxis(i*30f, Vector3.forward);
++                beam.localScale = new Vector3(0.18f, i % 2 == 0 ? 1.1f : 0.18f, length);
++            }
++            for (int end = -1; end <= 1; end += 2)
++                for (int i = 0; i < 48; i++)
++                {
++                    float angle = i * Mathf.PI * 2f / 48f;
++                    Transform rim = Primitive("End rim", PrimitiveType.Cube, station, frame).transform;
++                    rim.localPosition = new Vector3(Mathf.Cos(angle)*radius, Mathf.Sin(angle)*radius, end*length/2f);
++                    rim.localRotation = Quaternion.AngleAxis(i*7.5f, Vector3.forward);
++                    rim.localScale = new Vector3(0.18f, radius*2f*Mathf.Sin(Mathf.PI/48f)+0.03f,0.18f);
++                }
++            GameObject cameraObject = new GameObject("Overview Camera");
++            cameraObject.transform.SetParent(transform, false);
++            view = cameraObject.AddComponent<Camera>();
++            view.nearClipPlane = 0.05f;
++            view.farClipPlane = 30000f;
++            view.clearFlags = CameraClearFlags.SolidColor;
++            view.backgroundColor = Color.black;
++            cameraObject.AddComponent<AudioListener>();
++            sun = new GameObject("Sunlight").AddComponent<Light>();
++            sun.transform.SetParent(transform, false);
++            sun.type = LightType.Directional;
++            sun.intensity = 1.1f;
++            sun.shadows = LightShadows.Soft;
++            sunDisc = Primitive("Sun disc (angular-size proxy)", PrimitiveType.Sphere, transform,
++                Surface("Sun", new Color(1f, 0.96f, 0.84f), null, true)).transform;
++            sunDisc.gameObject.layer = 2;
++            moonFill = new GameObject("Artistic Moon fill").AddComponent<Light>();
++            moonFill.transform.SetParent(transform,false);
++            moonFill.type = LightType.Directional;
++            moonFill.shadows = LightShadows.None;
++            moonFill.cullingMask = 1; // Only layer 0 station, not layer 2 Moon/Sun proxies.
++            moonFill.color = new Color(0.82f,0.85f,0.9f);
++            sunDisc.localScale = Vector3.one * (2f * 20000f * Mathf.Tan(0.533f * Mathf.Deg2Rad * 0.5f));
++            stationRenderers = station.GetComponentsInChildren<Renderer>();
++            eclipse = new MaterialPropertyBlock();
++            UpdatePose();
++        }
++
++        private void Update()
++        {
++            if (station == null) return;
++            if (Input.GetKeyDown(KeyCode.Space)) paused = !paused;
++            if (Input.GetKeyDown(KeyCode.R)) simulationSeconds = 0.0;
++            if (Input.GetMouseButton(1))
++            {
++                yaw += Input.GetAxis("Mouse X") * 3f;
++                pitch = Mathf.Clamp(pitch-Input.GetAxis("Mouse Y")*3f,-80f,80f);
++            }
++            cameraDistance = Mathf.Clamp(cameraDistance-Input.mouseScrollDelta.y*5f,25f,2000f);
++            if (!paused) simulationSeconds += Time.deltaTime * Math.Max(0.0,timeMultiplier);
++            UpdatePose();
++        }
++
++        private void UpdatePose()
++        {
++            double radius = LunarOrbitMath.OrbitRadius(LunarOrbitMath.MoonRadius, Math.Max(0f,altitudeMetres));
++            double angle = LunarOrbitMath.Angle(0.0,LunarOrbitMath.AngularSpeed(LunarOrbitMath.MoonMu,radius),simulationSeconds);
++            station.localPosition = Quaternion.AngleAxis(inclinationDegrees,Vector3.right) * new Vector3(
++                (float)(LunarOrbitMath.OrbitX(radius,angle)/1000.0),
++                (float)(LunarOrbitMath.OrbitY(radius,angle)/1000.0),0f);
++            double spin = LunarOrbitMath.Angle(0.0,LunarOrbitMath.SpinRate(Math.Max(0f,surfaceGravity),
++                Math.Max(1f,stationRadiusMetres)),simulationSeconds);
++            station.localRotation = Quaternion.AngleAxis((float)(spin*180.0/Math.PI),Vector3.forward);
++            moon.localRotation = Quaternion.AngleAxis((float)(simulationSeconds/2360591.5*360.0),Vector3.forward) *
++                Quaternion.Euler(90f,0f,0f);
++            view.transform.localPosition = station.localPosition + Quaternion.Euler(pitch,yaw,0f)*Vector3.back*cameraDistance;
++            view.transform.LookAt(station.position,transform.up);
++            Vector3 direction = directionToSun.sqrMagnitude > 0.000001f ? directionToSun.normalized : Vector3.right;
++            sun.transform.rotation = Quaternion.LookRotation(transform.TransformDirection(-direction),
++                Mathf.Abs(Vector3.Dot(direction,Vector3.up)) > 0.99f ? transform.right : transform.up);
++            double moonAngle = Math.Asin(LunarOrbitMath.MoonRadius/radius);
++            lightVisibility = (float)LunarOrbitMath.SunVisibility(Vector3.Angle(-station.localPosition,direction)*Math.PI/180.0,
++                moonAngle,0.533*Math.PI/360.0);
++            moonFill.enabled = enableMoonFill;
++            moonFill.intensity = Mathf.Clamp(moonFillIntensity,0f,0.2f) * (float)LunarOrbitMath.MoonFillWeight(
++                moonAngle,Vector3.Dot(station.localPosition.normalized,direction));
++            Vector3 incomingFill = transform.TransformDirection(station.localPosition.normalized);
++            moonFill.transform.rotation = Quaternion.LookRotation(incomingFill,
++                Mathf.Abs(Vector3.Dot(incomingFill,Vector3.up)) > 0.99f ? Vector3.right : Vector3.up);
++            // The Moon stays sunlit even when the station enters lunar shadow.
++            // Only the station renderers receive the eclipse factor via property blocks.
++            foreach (Renderer renderer in stationRenderers)
++            {
++                eclipse.SetColor("_Color",renderer.sharedMaterial.color * Mathf.Lerp(0.025f,1f,lightVisibility));
++                renderer.SetPropertyBlock(eclipse);
++            }
++            sunDisc.localPosition = view.transform.localPosition + direction*20000f;
++        }
++
++        private void OnGUI()
++        {
++            GUILayout.BeginArea(new Rect(15,15,470,280),GUI.skin.box);
++            GUILayout.Label("LUNAR ORBIT / INERTIAL OVERVIEW");
++            GUILayout.Label("Smooth Moon + simplified station marker. 1 unit = 1 km.");
++            GUILayout.Label($"Altitude {altitudeMetres/1000f:F1} km | Time {simulationSeconds:F0} s | Sun {lightVisibility:P0}");
++            GUILayout.Label("Right-drag: look around | Scroll: zoom | Space: pause | R: reset");
++            GUILayout.Label("Playback multiplies BOTH orbit and spin. 1x is physical speed.");
++            GUILayout.BeginHorizontal();
++            if (GUILayout.Button("1x")) timeMultiplier=1f;
++            if (GUILayout.Button("10x")) timeMultiplier=10f;
++            if (GUILayout.Button("60x")) timeMultiplier=60f;
++            if (GUILayout.Button(paused ? "Resume" : "Pause")) paused=!paused;
++            GUILayout.EndHorizontal();
++            GUILayout.BeginHorizontal();
++            if (GUILayout.Button("10 km illustrative orbit")) altitudeMetres=10000f;
++            if (GUILayout.Button("100 km preview orbit")) altitudeMetres=100000f;
++            GUILayout.EndHorizontal();
++            if (GUILayout.Button(enableMoonFill ? "Artistic Moon fill: ON" : "Artistic Moon fill: OFF")) enableMoonFill=!enableMoonFill;
++            GUILayout.Label("Centre altitude only. No terrain/station-clearance validation.");
++            GUILayout.EndArea();
++        }
++        private void OnDestroy() { foreach (Material material in materials) if (material != null) Destroy(material); }
++    }
++}
+diff --git a/Assets/GraceLunarOrbit/Runtime/LunarOrbitDemo.cs.meta b/Assets/GraceLunarOrbit/Runtime/LunarOrbitDemo.cs.meta
+new file mode 100644
+index 0000000..ec08c0f
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Runtime/LunarOrbitDemo.cs.meta
+@@ -0,0 +1,11 @@
++fileFormatVersion: 2
++guid: a918af6e26ef6a205e1c6b23ac38f7c7
++MonoImporter:
++  externalObjects: {}
++  serializedVersion: 2
++  defaultReferences: []
++  executionOrder: 0
++  icon: {instanceID: 0}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Runtime/LunarOrbitMath.cs b/Assets/GraceLunarOrbit/Runtime/LunarOrbitMath.cs
+new file mode 100644
+index 0000000..309e307
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Runtime/LunarOrbitMath.cs
+@@ -0,0 +1,78 @@
++using System;
++
++namespace GraceLunarOrbit
++{
++    // SI units; double precision is retained until the Unity presentation boundary.
++    public static class LunarOrbitMath
++    {
++        public const double MoonRadius = 1737400.0;
++        public const double MoonMu = 4904869500000.0;
++
++        public static double OrbitRadius(double moonRadius, double altitude)
++        {
++            if (double.IsNaN(moonRadius) || double.IsInfinity(moonRadius) || moonRadius <= 0.0 ||
++                double.IsNaN(altitude) || double.IsInfinity(altitude) || altitude < 0.0)
++                throw new ArgumentOutOfRangeException("moonRadius/altitude");
++            return moonRadius + altitude;
++        }
++
++        public static double AngularSpeed(double mu, double orbitRadius)
++        {
++            if (double.IsNaN(mu) || double.IsInfinity(mu) || mu <= 0.0 ||
++                double.IsNaN(orbitRadius) || double.IsInfinity(orbitRadius) || orbitRadius <= 0.0)
++                throw new ArgumentOutOfRangeException("mu/orbitRadius");
++            return Math.Sqrt(mu / (orbitRadius * orbitRadius * orbitRadius));
++        }
++
++        public static double OrbitalPeriod(double mu, double orbitRadius)
++        {
++            return 2.0 * Math.PI / AngularSpeed(mu, orbitRadius);
++        }
++
++        public static double SpinRate(double gravity, double habitatRadius)
++        {
++            if (double.IsNaN(gravity) || double.IsInfinity(gravity) || gravity < 0.0 ||
++                double.IsNaN(habitatRadius) || double.IsInfinity(habitatRadius) || habitatRadius <= 0.0)
++                throw new ArgumentOutOfRangeException("gravity/habitatRadius");
++            return Math.Sqrt(gravity / habitatRadius);
++        }
++
++        public static double Angle(double initialRadians, double rateRadiansPerSecond, double seconds)
++        {
++            if (double.IsNaN(initialRadians) || double.IsInfinity(initialRadians) ||
++                double.IsNaN(rateRadiansPerSecond) || double.IsInfinity(rateRadiansPerSecond) ||
++                double.IsNaN(seconds) || double.IsInfinity(seconds))
++                throw new ArgumentOutOfRangeException("angle/time");
++            double turns = (initialRadians + rateRadiansPerSecond * seconds) / (2.0 * Math.PI);
++            return (turns - Math.Floor(turns)) * (2.0 * Math.PI);
++        }
++
++        public static double OrbitX(double radius, double angle) { return radius * Math.Cos(angle); }
++        public static double OrbitY(double radius, double angle) { return radius * Math.Sin(angle); }
++
++        // Artistic preview weighting, not a reflected-irradiance calculation.
++        public static double MoonFillWeight(double moonAngularRadius, double phaseCosine)
++        {
++            double size = 1.0 - Math.Cos(Math.Max(0.0, Math.Min(Math.PI / 2.0, moonAngularRadius)));
++            double phase = 0.5 + 0.5 * Math.Max(-1.0, Math.Min(1.0, phaseCosine));
++            return size * phase;
++        }
++
++        // Fraction of a uniformly bright solar disc visible behind the Moon.
++        // Angles are radians. This is geometric occultation, not limb darkening.
++        public static double SunVisibility(double separation, double moonAngularRadius, double sunAngularRadius)
++        {
++            double d = Math.Max(0.0, separation);
++            double r = Math.Max(0.0, moonAngularRadius);
++            double s = Math.Max(0.000000001, sunAngularRadius);
++            if (d >= r + s) return 1.0;
++            if (d <= Math.Abs(r - s))
++                return r >= s ? 0.0 : 1.0 - r * r / (s * s);
++            double a = Math.Acos(Math.Max(-1.0, Math.Min(1.0, (d*d + s*s - r*r) / (2.0*d*s))));
++            double b = Math.Acos(Math.Max(-1.0, Math.Min(1.0, (d*d + r*r - s*s) / (2.0*d*r))));
++            double area = s*s*a + r*r*b - 0.5 * Math.Sqrt(Math.Max(0.0,
++                (-d+s+r)*(d+s-r)*(d-s+r)*(d+s+r)));
++            return Math.Max(0.0, Math.Min(1.0, 1.0 - area / (Math.PI*s*s)));
++        }
++    }
++}
+diff --git a/Assets/GraceLunarOrbit/Runtime/LunarOrbitMath.cs.meta b/Assets/GraceLunarOrbit/Runtime/LunarOrbitMath.cs.meta
+new file mode 100644
+index 0000000..7fc4520
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Runtime/LunarOrbitMath.cs.meta
+@@ -0,0 +1,11 @@
++fileFormatVersion: 2
++guid: 6ea7381a410a68a30bf64426fdfaa6cb
++MonoImporter:
++  externalObjects: {}
++  serializedVersion: 2
++  defaultReferences: []
++  executionOrder: 0
++  icon: {instanceID: 0}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Runtime/LunarOrbitSky.cs b/Assets/GraceLunarOrbit/Runtime/LunarOrbitSky.cs
+new file mode 100644
+index 0000000..6f54f0b
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Runtime/LunarOrbitSky.cs
+@@ -0,0 +1,257 @@
++using System;
++using UnityEngine;
++
++namespace GraceLunarOrbit
++{
++    [DisallowMultipleComponent]
++    public sealed class LunarOrbitSky : MonoBehaviour
++    {
++        [Header("Existing habitat (never moved by this component)")]
++        public Transform habitatOrigin;
++        public Camera habitatCamera;
++        [Tooltip("Assign the existing bootstrap Sun to avoid a second directional light.")]
++        public Light sunlight;
++        [Tooltip("Assign Grace/Lunar Orbit Sky. A serialized reference keeps it in player builds.")]
++        public Shader skyShader;
++        public Texture2D moonAlbedo;
++
++        [Header("Circular lunar orbit (SI units)")]
++        [Min(1f)] public float moonRadiusMetres = 1737400f;
++        public double moonMu = 4904869500000.0;
++        [Min(0f)] public float altitudeMetres = 100000f;
++        public float inclinationDegrees = 20f;
++        public float ascendingNodeDegrees;
++        public float initialOrbitDegrees;
++
++        [Header("Station spin: must match existing rotating-frame physics")]
++        [Min(1f)] public float habitatRadiusMetres = 4000f;
++        [Min(0f)] public float surfaceGravity = 9.81f;
++        public float initialSpinDegrees;
++        [Tooltip("Fixed inertial axis. Keep zero for the default Z-axis habitat.")]
++        public Vector3 inertialAxisEuler;
++
++        [Header("Sun and lunar map")]
++        public Vector3 directionToSunInertial = new Vector3(1f, 0.2f, 0.1f);
++        [Range(0.1f, 2f)] public float sunAngularDiameterDegrees = 0.533f;
++        public float moonMapLongitudeOffsetDegrees;
++        [Min(1f)] public float moonRotationPeriodSeconds = 2360591.5f;
++
++        [Header("Optional artistic reflected Moon fill (not photometric)")]
++        public bool enableMoonFillLight;
++        [Range(0f, 0.2f)] public float moonFillIntensity = 0.04f;
++        public Color moonFillColor = new Color(0.82f, 0.85f, 0.9f);
++
++        [Header("Clock")]
++        [Min(0f)] public float timeMultiplier = 1f;
++        public bool paused;
++        public double simulationSeconds;
++
++        public Vector3 StationPositionKm { get; private set; }
++        public Quaternion HabitatToInertial { get; private set; }
++        public float SunVisibility { get; private set; } = 1f;
++        public double OrbitPeriodSeconds => LunarOrbitMath.OrbitalPeriod(moonMu,
++            LunarOrbitMath.OrbitRadius(moonRadiusMetres, altitudeMetres));
++        public double SpinPeriodSeconds => surfaceGravity > 0f
++            ? 2.0 * Math.PI / LunarOrbitMath.SpinRate(surfaceGravity, habitatRadiusMetres)
++            : double.PositiveInfinity;
++
++        private Material ownedSky;
++        private Material previousSky;
++        private CameraClearFlags previousClearFlags;
++        private float previousIntensity;
++        private Quaternion previousLightRotation;
++        private Light previousRenderSun;
++        private Light ownedMoonFill;
++        private bool initialized;
++        private bool ownsLight;
++        private bool started;
++        private static LunarOrbitSky activeSky;
++
++        private void Start() { started = true; Initialize(); }
++
++        private void Initialize()
++        {
++            if (habitatOrigin == null || habitatCamera == null || skyShader == null)
++            {
++                Debug.LogError("LunarOrbitSky needs a habitat origin, camera and sky shader. Nothing was changed.", this);
++                enabled = false;
++                return;
++            }
++            if (activeSky != null && activeSky != this)
++            {
++                Debug.LogError("Only one LunarOrbitSky can own the global sky at a time.", this);
++                enabled = false;
++                return;
++            }
++            try { EvaluatePose(); }
++            catch (ArgumentOutOfRangeException error)
++            {
++                Debug.LogError("Invalid lunar orbit settings: " + error.Message, this);
++                enabled = false;
++                return;
++            }
++            activeSky = this;
++            previousSky = RenderSettings.skybox;
++            previousRenderSun = RenderSettings.sun;
++            previousClearFlags = habitatCamera.clearFlags;
++            ownedSky = new Material(skyShader) { name = "Lunar Orbit Sky (runtime)" };
++            RenderSettings.skybox = ownedSky;
++            habitatCamera.clearFlags = CameraClearFlags.Skybox;
++            if (sunlight == null)
++            {
++                GameObject go = new GameObject("Lunar Orbit Sun");
++                go.transform.SetParent(transform, false);
++                sunlight = go.AddComponent<Light>();
++                sunlight.type = LightType.Directional;
++                sunlight.intensity = 1.1f;
++                sunlight.shadows = LightShadows.Soft;
++                ownsLight = true;
++                Debug.LogWarning("Created a Sun. Disable any other directional sun, or assign it instead.", this);
++            }
++            previousIntensity = sunlight.intensity;
++            previousLightRotation = sunlight.transform.rotation;
++            RenderSettings.sun = sunlight;
++            initialized = true;
++            ApplyPresentation();
++        }
++
++        private void Update()
++        {
++            if (!initialized) return;
++            if (!paused) simulationSeconds += Time.deltaTime * Math.Max(0.0, timeMultiplier);
++            try { EvaluatePose(); }
++            catch (ArgumentOutOfRangeException error)
++            {
++                Debug.LogError("Invalid lunar orbit settings: " + error.Message, this);
++                enabled = false;
++                return;
++            }
++        }
++
++        // FloatingOrigin currently runs in LateUpdate. Rendering from the camera
++        // callback observes the final rebased camera/origin, without an order race.
++        private void OnEnable()
++        {
++            Camera.onPreCull += BeforeCamera;
++            if (started) Initialize();
++        }
++        private void BeforeCamera(Camera camera)
++        {
++            if (initialized && camera == habitatCamera) ApplyPresentation();
++        }
++
++        public void EvaluatePose()
++        {
++            ValidateSettings();
++            double r = LunarOrbitMath.OrbitRadius(moonRadiusMetres, altitudeMetres);
++            double orbit = LunarOrbitMath.Angle(initialOrbitDegrees * Math.PI / 180.0,
++                LunarOrbitMath.AngularSpeed(moonMu, r), simulationSeconds);
++            Quaternion plane = Quaternion.AngleAxis(ascendingNodeDegrees, Vector3.forward) *
++                Quaternion.AngleAxis(inclinationDegrees, Vector3.right);
++            StationPositionKm = plane * new Vector3(
++                (float)(LunarOrbitMath.OrbitX(r, orbit) / 1000.0),
++                (float)(LunarOrbitMath.OrbitY(r, orbit) / 1000.0), 0f);
++            double spin = LunarOrbitMath.Angle(initialSpinDegrees * Math.PI / 180.0,
++                LunarOrbitMath.SpinRate(surfaceGravity, habitatRadiusMetres), simulationSeconds);
++            HabitatToInertial = Quaternion.Euler(inertialAxisEuler) *
++                Quaternion.AngleAxis((float)(spin * 180.0 / Math.PI), Vector3.forward);
++        }
++
++        private static void RequireFinite(double value)
++        {
++            if (double.IsNaN(value) || double.IsInfinity(value))
++                throw new ArgumentOutOfRangeException("Orbit settings must be finite");
++        }
++
++        private void ValidateSettings()
++        {
++            RequireFinite(simulationSeconds); RequireFinite(timeMultiplier);
++            RequireFinite(inclinationDegrees); RequireFinite(ascendingNodeDegrees);
++            RequireFinite(initialOrbitDegrees); RequireFinite(initialSpinDegrees);
++            RequireFinite(inertialAxisEuler.x); RequireFinite(inertialAxisEuler.y); RequireFinite(inertialAxisEuler.z);
++            RequireFinite(directionToSunInertial.x); RequireFinite(directionToSunInertial.y); RequireFinite(directionToSunInertial.z);
++            RequireFinite(sunAngularDiameterDegrees); RequireFinite(moonMapLongitudeOffsetDegrees);
++            RequireFinite(moonRotationPeriodSeconds); RequireFinite(moonFillIntensity);
++            if (sunAngularDiameterDegrees <= 0f || sunAngularDiameterDegrees >= 180f || moonRotationPeriodSeconds <= 0f)
++                throw new ArgumentOutOfRangeException("Sun diameter / Moon rotation period");
++            if (sunlight != null && sunlight.type != LightType.Directional)
++                throw new ArgumentOutOfRangeException("Assign a directional Sun light");
++        }
++
++        private void ApplyPresentation()
++        {
++            if (habitatOrigin == null || habitatCamera == null || sunlight == null) return;
++            Quaternion inertialToHabitat = Quaternion.Inverse(HabitatToInertial);
++            Quaternion habitatToWorld = habitatOrigin.rotation;
++            Vector3 cameraOffsetKm = habitatOrigin.InverseTransformDirection(
++                habitatCamera.transform.position - habitatOrigin.position) / 1000f;
++            Vector3 moonFromCamera = inertialToHabitat * -StationPositionKm - cameraOffsetKm;
++            Vector3 sunInertial = directionToSunInertial.sqrMagnitude > 0.000001f
++                ? directionToSunInertial.normalized : Vector3.right;
++            Vector3 sunLocal = inertialToHabitat * sunInertial;
++            Vector3 sunWorld = habitatToWorld * sunLocal;
++            float distance = moonFromCamera.magnitude;
++            double moonAngle = Math.Asin(Math.Min(1.0, moonRadiusMetres / (1000.0 * Math.Max(0.001, distance))));
++            double separation = Vector3.Angle(moonFromCamera, sunLocal) * Math.PI / 180.0;
++            SunVisibility = (float)LunarOrbitMath.SunVisibility(separation, moonAngle,
++                Math.Max(0.001, sunAngularDiameterDegrees) * Math.PI / 360.0);
++            sunlight.intensity = previousIntensity * SunVisibility;
++            sunlight.transform.rotation = Quaternion.LookRotation(-sunWorld,
++                Mathf.Abs(Vector3.Dot(sunWorld, Vector3.up)) > 0.99f ? Vector3.right : Vector3.up);
++            if (enableMoonFillLight && ownedMoonFill == null)
++            {
++                GameObject fill = new GameObject("Moon fill (artistic approximation)");
++                fill.transform.SetParent(transform, false);
++                ownedMoonFill = fill.AddComponent<Light>();
++                ownedMoonFill.type = LightType.Directional;
++                ownedMoonFill.shadows = LightShadows.None;
++                ownedMoonFill.cullingMask = sunlight.cullingMask;
++            }
++            if (ownedMoonFill != null)
++            {
++                ownedMoonFill.enabled = enableMoonFillLight;
++                ownedMoonFill.color = moonFillColor;
++                ownedMoonFill.intensity = Mathf.Clamp(moonFillIntensity,0f,0.2f) *
++                    (float)LunarOrbitMath.MoonFillWeight(moonAngle,Vector3.Dot(-moonFromCamera.normalized,sunLocal));
++                Vector3 incoming = habitatToWorld * -moonFromCamera.normalized;
++                ownedMoonFill.transform.rotation = Quaternion.LookRotation(incoming,
++                    Mathf.Abs(Vector3.Dot(incoming,Vector3.up)) > 0.99f ? Vector3.right : Vector3.up);
++            }
++            ownedSky.SetVector("_MoonCenterKm", habitatToWorld * moonFromCamera);
++            ownedSky.SetFloat("_MoonRadiusKm", moonRadiusMetres / 1000f);
++            ownedSky.SetVector("_SunDirection", sunWorld);
++            ownedSky.SetFloat("_SunCosRadius", Mathf.Cos(sunAngularDiameterDegrees * Mathf.Deg2Rad * 0.5f));
++            ownedSky.SetFloat("_HasMoonMap", moonAlbedo != null ? 1f : 0f);
++            if (moonAlbedo != null) ownedSky.SetTexture("_MoonMap", moonAlbedo);
++            double lunarAngle = LunarOrbitMath.Angle(0.0, 2.0 * Math.PI /
++                Math.Max(1.0, moonRotationPeriodSeconds), simulationSeconds);
++            Quaternion moonToInertial = Quaternion.AngleAxis((float)(lunarAngle * 180.0 / Math.PI) +
++                moonMapLongitudeOffsetDegrees, Vector3.forward);
++            Quaternion worldToMoon = Quaternion.Inverse(moonToInertial) * HabitatToInertial *
++                Quaternion.Inverse(habitatToWorld);
++            ownedSky.SetMatrix("_WorldToMoon", Matrix4x4.Rotate(worldToMoon));
++            ownedSky.SetMatrix("_WorldToInertial", Matrix4x4.Rotate(HabitatToInertial *
++                Quaternion.Inverse(habitatToWorld)));
++        }
++
++        private void OnDisable()
++        {
++            Camera.onPreCull -= BeforeCamera;
++            if (!initialized) return;
++            if (RenderSettings.skybox == ownedSky) RenderSettings.skybox = previousSky;
++            if (RenderSettings.sun == sunlight) RenderSettings.sun = previousRenderSun;
++            if (habitatCamera != null && habitatCamera.clearFlags == CameraClearFlags.Skybox)
++                habitatCamera.clearFlags = previousClearFlags;
++            if (sunlight != null)
++            {
++                if (ownsLight) { Destroy(sunlight.gameObject); sunlight = null; }
++                else { sunlight.intensity = previousIntensity; sunlight.transform.rotation = previousLightRotation; }
++            }
++            if (ownedMoonFill != null) { Destroy(ownedMoonFill.gameObject); ownedMoonFill = null; }
++            if (ownedSky != null) Destroy(ownedSky);
++            if (activeSky == this) activeSky = null;
++            initialized = false;
++            ownsLight = false;
++        }
++    }
++}
+diff --git a/Assets/GraceLunarOrbit/Runtime/LunarOrbitSky.cs.meta b/Assets/GraceLunarOrbit/Runtime/LunarOrbitSky.cs.meta
+new file mode 100644
+index 0000000..6895230
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Runtime/LunarOrbitSky.cs.meta
+@@ -0,0 +1,11 @@
++fileFormatVersion: 2
++guid: bd02ca55bbd26da62f9b7fda6c493b07
++MonoImporter:
++  externalObjects: {}
++  serializedVersion: 2
++  defaultReferences: []
++  executionOrder: 0
++  icon: {instanceID: 0}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Scenes.meta b/Assets/GraceLunarOrbit/Scenes.meta
+new file mode 100644
+index 0000000..596a6ba
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Scenes.meta
+@@ -0,0 +1,8 @@
++fileFormatVersion: 2
++guid: 677eaa89aca9ad0db3a7ec121a6ac49e
++folderAsset: yes
++DefaultImporter:
++  externalObjects: {}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Scenes/LunarOrbitOverview.unity b/Assets/GraceLunarOrbit/Scenes/LunarOrbitOverview.unity
+new file mode 100644
+index 0000000..7ec9d82
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Scenes/LunarOrbitOverview.unity
+@@ -0,0 +1,89 @@
++%YAML 1.1
++%TAG !u! tag:unity3d.com,2011:
++--- !u!104 &2
++RenderSettings:
++  m_ObjectHideFlags: 0
++  serializedVersion: 9
++  m_Fog: 0
++  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
++  m_FogMode: 3
++  m_FogDensity: 0.01
++  m_LinearFogStart: 0
++  m_LinearFogEnd: 300
++  m_AmbientSkyColor: {r: 0.01, g: 0.01, b: 0.015, a: 1}
++  m_AmbientEquatorColor: {r: 0.005, g: 0.005, b: 0.005, a: 1}
++  m_AmbientGroundColor: {r: 0.005, g: 0.005, b: 0.005, a: 1}
++  m_AmbientIntensity: 0.05
++  m_AmbientMode: 3
++  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
++  m_SkyboxMaterial: {fileID: 0}
++  m_HaloStrength: 0
++  m_FlareStrength: 0
++  m_FlareFadeSpeed: 3
++  m_HaloTexture: {fileID: 0}
++  m_SpotCookie: {fileID: 0}
++  m_DefaultReflectionMode: 0
++  m_DefaultReflectionResolution: 128
++  m_ReflectionBounces: 1
++  m_ReflectionIntensity: 0
++  m_CustomReflection: {fileID: 0}
++  m_Sun: {fileID: 0}
++  m_UseRadianceAmbientProbe: 0
++--- !u!1 &1000
++GameObject:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  serializedVersion: 6
++  m_Component:
++  - component: {fileID: 1001}
++  - component: {fileID: 1002}
++  m_Layer: 0
++  m_Name: Lunar Orbit Overview - Press Play
++  m_TagString: Untagged
++  m_Icon: {fileID: 0}
++  m_NavMeshLayer: 0
++  m_StaticEditorFlags: 0
++  m_IsActive: 1
++--- !u!4 &1001
++Transform:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1000}
++  serializedVersion: 2
++  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
++  m_LocalPosition: {x: 0, y: 0, z: 0}
++  m_LocalScale: {x: 1, y: 1, z: 1}
++  m_ConstrainProportionsScale: 0
++  m_Children: []
++  m_Father: {fileID: 0}
++  m_RootOrder: 0
++  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
++--- !u!114 &1002
++MonoBehaviour:
++  m_ObjectHideFlags: 0
++  m_CorrespondingSourceObject: {fileID: 0}
++  m_PrefabInstance: {fileID: 0}
++  m_PrefabAsset: {fileID: 0}
++  m_GameObject: {fileID: 1000}
++  m_Enabled: 1
++  m_EditorHideFlags: 0
++  m_Script: {fileID: 11500000, guid: a918af6e26ef6a205e1c6b23ac38f7c7, type: 3}
++  m_Name:
++  m_EditorClassIdentifier:
++  moonAlbedo: {fileID: 0}
++  referenceSurfaceShader: {fileID: 4800000, guid: 01c2c5b91f97fbccafb0e65ae010709c, type: 3}
++  altitudeMetres: 100000
++  stationRadiusMetres: 4000
++  stationLengthMetres: 32000
++  surfaceGravity: 9.81
++  timeMultiplier: 1
++  inclinationDegrees: 20
++  directionToSun: {x: 1, y: 0.2, z: 0.1}
++  enableMoonFill: 1
++  moonFillIntensity: 0.04
++  paused: 0
++  simulationSeconds: 0
+diff --git a/Assets/GraceLunarOrbit/Scenes/LunarOrbitOverview.unity.meta b/Assets/GraceLunarOrbit/Scenes/LunarOrbitOverview.unity.meta
+new file mode 100644
+index 0000000..d672c93
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Scenes/LunarOrbitOverview.unity.meta
+@@ -0,0 +1,7 @@
++fileFormatVersion: 2
++guid: dffac70c469a429791fb2e3439996631
++DefaultImporter:
++  externalObjects: {}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Shaders.meta b/Assets/GraceLunarOrbit/Shaders.meta
+new file mode 100644
+index 0000000..43e3daa
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Shaders.meta
+@@ -0,0 +1,8 @@
++fileFormatVersion: 2
++guid: 02ea5ff2c41117476e3eb7e86830a48e
++folderAsset: yes
++DefaultImporter:
++  externalObjects: {}
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Shaders/LunarOrbitSky.shader b/Assets/GraceLunarOrbit/Shaders/LunarOrbitSky.shader
+new file mode 100644
+index 0000000..8de7101
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Shaders/LunarOrbitSky.shader
+@@ -0,0 +1,71 @@
++Shader "Grace/Lunar Orbit Sky"
++{
++    Properties
++    {
++        _MoonMap ("Moon equirectangular albedo", 2D) = "white" {}
++        _MoonCenterKm ("Moon center relative to camera", Vector) = (-1837.4,0,0,0)
++        _MoonRadiusKm ("Moon radius km", Float) = 1737.4
++        _SunDirection ("Direction to Sun", Vector) = (1,0,0,0)
++        _SunCosRadius ("Cos solar angular radius", Float) = 0.99998918
++        _HasMoonMap ("Has Moon map", Float) = 0
++    }
++    SubShader
++    {
++        Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" }
++        Cull Off ZWrite Off
++        Pass
++        {
++            CGPROGRAM
++            #pragma vertex vert
++            #pragma fragment frag
++            #pragma target 3.0
++            #include "UnityCG.cginc"
++            struct appdata { float4 vertex : POSITION; };
++            struct v2f { float4 vertex : SV_POSITION; float3 direction : TEXCOORD0; };
++            sampler2D _MoonMap;
++            float3 _MoonCenterKm, _SunDirection;
++            float _MoonRadiusKm, _SunCosRadius, _HasMoonMap;
++            float4x4 _WorldToMoon, _WorldToInertial;
++            v2f vert(appdata v)
++            {
++                v2f o;
++                o.vertex = UnityObjectToClipPos(v.vertex);
++                o.direction = mul((float3x3)unity_ObjectToWorld, v.vertex.xyz);
++                return o;
++            }
++            float hash(float3 p) { return frac(sin(dot(p,float3(12.9898,78.233,37.719))) * 43758.5453); }
++            fixed4 frag(v2f i) : SV_Target
++            {
++                float3 ray = normalize(i.direction);
++                float3 sun = normalize(_SunDirection);
++                float b = dot(ray, _MoonCenterKm);
++                float c = dot(_MoonCenterKm,_MoonCenterKm) - _MoonRadiusKm*_MoonRadiusKm;
++                float discriminant = b*b-c;
++                if (discriminant >= 0 && b > 0)
++                {
++                    float t = b - sqrt(discriminant);
++                    if (t > 0)
++                    {
++                        float3 n = normalize(ray*t-_MoonCenterKm);
++                        float3 mapN = mul((float3x3)_WorldToMoon,n);
++                        // Z is lunar north in the orbital model. A lat/long texture
++                        // maps longitude horizontally and north at the top.
++                        float2 uv = float2(atan2(mapN.y,mapN.x)/(2*UNITY_PI)+0.5,
++                            asin(clamp(mapN.z,-1,1))/UNITY_PI+0.5);
++                        float3 albedo = lerp(float3(0.38,0.38,0.37),tex2D(_MoonMap,uv).rgb,_HasMoonMap);
++                        return fixed4(albedo * (0.018 + 0.982*max(0,dot(n,sun))),1);
++                    }
++                }
++                float solar = dot(ray,sun);
++                float width = max(fwidth(solar),0.0000001);
++                float disc = smoothstep(_SunCosRadius-width,_SunCosRadius+width,solar);
++                float glow = pow(max(0,solar),3000)*0.05;
++                float3 inertialRay = mul((float3x3)_WorldToInertial,ray);
++                float star = step(0.9997,hash(floor(inertialRay*1600))) * 0.65;
++                return fixed4(float3(0.001,0.0015,0.003)+star+float3(1,0.96,0.84)*(disc+glow),1);
++            }
++            ENDCG
++        }
++    }
++    Fallback Off
++}
+diff --git a/Assets/GraceLunarOrbit/Shaders/LunarOrbitSky.shader.meta b/Assets/GraceLunarOrbit/Shaders/LunarOrbitSky.shader.meta
+new file mode 100644
+index 0000000..a91bdb2
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Shaders/LunarOrbitSky.shader.meta
+@@ -0,0 +1,9 @@
++fileFormatVersion: 2
++guid: a98b98990dc277055bdd111bb316d1ab
++ShaderImporter:
++  externalObjects: {}
++  defaultTextures: []
++  nonModifiableTextures: []
++  userData:
++  assetBundleName:
++  assetBundleVariant:
+diff --git a/Assets/GraceLunarOrbit/Shaders/LunarReferenceSurface.shader b/Assets/GraceLunarOrbit/Shaders/LunarReferenceSurface.shader
+new file mode 100644
+index 0000000..a1f9da8
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Shaders/LunarReferenceSurface.shader
+@@ -0,0 +1,31 @@
++Shader "Grace/Lunar Reference Surface"
++{
++    Properties
++    {
++        _Color ("Color", Color) = (1,1,1,1)
++        _MainTex ("Equirectangular texture", 2D) = "white" {}
++        _EmissionColor ("Emission", Color) = (0,0,0,0)
++    }
++    SubShader
++    {
++        Tags { "RenderType"="Opaque" }
++        LOD 200
++        CGPROGRAM
++        #pragma surface surf Standard fullforwardshadows
++        #pragma target 3.0
++        sampler2D _MainTex;
++        fixed4 _Color, _EmissionColor;
++        struct Input { float2 uv_MainTex; };
++        void surf(Input IN, inout SurfaceOutputStandard o)
++        {
++            fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
++            o.Albedo = c.rgb;
++            o.Metallic = 0;
++            o.Smoothness = 0.08;
++            o.Alpha = 1;
++            o.Emission = _EmissionColor.rgb;
++        }
++        ENDCG
++    }
++    Fallback "Diffuse"
++}
+diff --git a/Assets/GraceLunarOrbit/Shaders/LunarReferenceSurface.shader.meta b/Assets/GraceLunarOrbit/Shaders/LunarReferenceSurface.shader.meta
+new file mode 100644
+index 0000000..ede8b24
+--- /dev/null
++++ b/Assets/GraceLunarOrbit/Shaders/LunarReferenceSurface.shader.meta
+@@ -0,0 +1,9 @@
++fileFormatVersion: 2
++guid: 01c2c5b91f97fbccafb0e65ae010709c
++ShaderImporter:
++  externalObjects: {}
++  defaultTextures: []
++  nonModifiableTextures: []
++  userData:
++  assetBundleName:
++  assetBundleVariant:

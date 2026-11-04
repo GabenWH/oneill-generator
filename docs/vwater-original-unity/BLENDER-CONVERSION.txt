@@ -1,0 +1,48 @@
+Extensions: writing cache failed ([Errno 30] Read-only file system: '/home/agent/.config/blender').
+16:37:38 | INFO: Data are loaded, start creating Blender stuff
+16:37:38 | INFO: Blender create Mesh node Continuous lifting-body shell
+16:37:38 | INFO: Blender create Mesh node One wraparound visor
+16:37:38 | INFO: Blender create Mesh node Raised canopy perimeter seal
+16:37:38 | INFO: Blender create Mesh node Cube.013
+16:37:38 | INFO: Blender create Mesh node Cube.014
+16:37:38 | INFO: Blender create Mesh node Square recessed exhaust opening
+16:37:38 | INFO: Blender create Mesh node Cube.015
+16:37:38 | INFO: Blender create Mesh node Cube.016
+16:37:38 | INFO: Blender create Mesh node Square recessed exhaust opening.001
+16:37:38 | INFO: Blender create Mesh node Cargo hatch dark surround
+16:37:38 | INFO: Blender create Mesh node Cube.017
+16:37:38 | INFO: Blender create Mesh node Central cargo hatch
+16:37:38 | INFO: Blender create Mesh node Underbody vent decal
+16:37:38 | INFO: Blender create Mesh node Underbody vent decal.001
+16:37:38 | INFO: Blender create Mesh node Cylinder.001
+16:37:38 | INFO: Blender create Mesh node Cylinder.003
+16:37:38 | INFO: Blender create Mesh node Cube.005
+16:37:38 | INFO: Blender create Mesh node Cube.011
+16:37:38 | INFO: Blender create Mesh node Cube
+16:37:38 | INFO: Blender create Mesh node Cube.001
+16:37:38 | INFO: Blender create Mesh node Cube.002
+16:37:38 | INFO: Blender create Mesh node Cube.003
+16:37:38 | INFO: Blender create Mesh node Cube.004
+16:37:38 | INFO: Blender create Mesh node Cube.006
+16:37:38 | INFO: Blender create Mesh node Cube.007
+16:37:38 | INFO: Blender create Mesh node Cube.008
+16:37:38 | INFO: Blender create Mesh node Cube.009
+16:37:38 | INFO: Blender create Mesh node Cube.010
+16:37:38 | INFO: Blender create Mesh node Recessed lift-fan duct
+16:37:38 | INFO: Blender create Mesh node Recessed lift-fan duct.001
+16:37:38 | INFO: Blender create Mesh node Folded-arm dark seam Left
+16:37:38 | INFO: Blender create Mesh node Folded-arm dark seam Right
+16:37:38 | INFO: Blender create Mesh node Broad rear support
+16:37:38 | INFO: Blender create Mesh node Cube.012
+16:37:38 | INFO: Blender create Mesh node Sculpted folded ivory arm Left
+16:37:38 | INFO: Blender create Mesh node Sculpted folded ivory arm Right
+16:37:38 | INFO: glTF import finished in 0.06s
+
+FBX export starting... '/workspace/scratch/6a4a6307ccbd/oneill-vwater-original-test/Assets/GraceVWaterOriginalTest/PreparedDrone/Drone50Wide.fbx'
+export finished in 0.0733 sec.
+Extensions: writing cache failed ([Errno 30] Read-only file system: '/home/agent/.config/blender').
+FBX version: 7400
+PASS: approved GLB->FBX conversion, source geometry counts/bounds and markers; NOT Unity import/render validation.
+Blender 4.3.2
+
+Blender quit

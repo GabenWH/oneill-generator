@@ -1,0 +1,778 @@
+{
+  "repository": "zulubo/VWater",
+  "commit": "fb156e302f213a507956de0db1a442c17e22d6b5",
+  "all_asset_bytes_unmodified": true,
+  "unity_compile_unrun": true,
+  "unity_play_unrun": true,
+  "files": [
+    {
+      "path": "Assets/VWater.meta",
+      "git_blob": "3e717e3124ff5a700c10d8e145cefc3fb66e343e",
+      "sha256": "b6f58c19aa4ec31737ebfd97e45303946c563890ffd9b11345a58cb49f149f1d"
+    },
+    {
+      "path": "Assets/VWater/Examples.meta",
+      "git_blob": "0b351f4fad27fb43eee09210a9427c9f549deda4",
+      "sha256": "cdc174afe161876231b765989af615ccc60940a2a56e1d70f0436f642aecb27a"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models.meta",
+      "git_blob": "6768658a9cccf9bb9979e08d3b9ce366a00c4649",
+      "sha256": "beb610f0605a900f528240273fc6768eade7dfdbba70fa7cbcf7d2ae88c1fa73"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Island.fbx",
+      "git_blob": "f47b70408fb525da18c61df68b35a9f68723e600",
+      "sha256": "71504aa31b917c42087996ff295d3fc1b0a7c8c6ecf6e89d667f44d43620e6bc"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Island.fbx.meta",
+      "git_blob": "c736ca1a7604aa0fabc39c40c70e587ca09dff7c",
+      "sha256": "e429844d46e8154ccaad823892de3a789fc573187d86c8e75d1486f3e1632cd4"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Island.mat",
+      "git_blob": "bd43a5b1cd99f20801ad56e0872d606f1d41b5a8",
+      "sha256": "4b6e9767cabd011ef5cc4626a909b87424c047885cd64f4028697b47e68b7fd1"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Island.mat.meta",
+      "git_blob": "1b5461f5e54ad459bd0d75910ddb02143f120705",
+      "sha256": "8181732e7a00543191f10b3943a8514835927e840aaa0fe573e4bf7b8016a212"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat.fbx",
+      "git_blob": "a33b444983c7f2d12808725cf03fe385d04886cf",
+      "sha256": "2988717296093369fd0fa402c8cb10ca7b6a3bf74d6e8483233db41ee03d83b2"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat.fbx.meta",
+      "git_blob": "c0cffb03ca5526eeb22cd26a20295d269ee8b48e",
+      "sha256": "f7d1cdbcc6eee98e07fe6a00af4bf3bee936a91db07eb6ca70b4e942078cbe9c"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat.mat",
+      "git_blob": "0543d442ea232ebfe03ed56cdc286f854a28e261",
+      "sha256": "210648adaa096c5fb3af10954f142ddac52056a14304866797069feb10765c96"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat.mat.meta",
+      "git_blob": "a4aa3bb88c5f38fc694c7b885b1c556e9a4c7c06",
+      "sha256": "dfe797fcf70b83d922d1b11261f76dc6c4b569cec68b96ec69e0023ef5da9567"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat.prefab",
+      "git_blob": "36e4d47126d18ab07ce319c38b7fc46597d3f229",
+      "sha256": "28507df13eb2d1cd595e60d000542fcf7685d9a1e41f142e7bbe3db469c7666e"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat.prefab.meta",
+      "git_blob": "481f347a8344c4dfca641420d272d8b83b561cd7",
+      "sha256": "7b6b831aebfc0537b0b2e49898901064530a57d7c9159425645da13ec219b506"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/RowboatOar.prefab",
+      "git_blob": "9d768169e8cbc7986976ab89f99d4781acf26bee",
+      "sha256": "e8516dbe4cb06db07a4514ce686eacbf0df8354d0f9cdc329a394513f8d6158e"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/RowboatOar.prefab.meta",
+      "git_blob": "ff87191bc391eb2a12836723b1fe0dc2e914f0f1",
+      "sha256": "9ef1f7f5eb8384a245853f9efb622832b9e1098158621f75647c4241f1ef1be4"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat_AlbedoTransparency.png",
+      "git_blob": "39be94fe14dfd13602f945122ffbcdbd2f196097",
+      "sha256": "f86d40aaab311dc02bc24be29b1085b8e56dd567e8473b050904952648f4fa67"
+    },
+    {
+      "path": "Assets/VWater/Examples/Models/Rowboat_AlbedoTransparency.png.meta",
+      "git_blob": "90ca70549d2ded45c324db95aec35c9232febc20",
+      "sha256": "b5184ae8163c5d89d46bcba83d98570736b9e1c548a467a5711613395811f9a7"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example.meta",
+      "git_blob": "85202ba3ca7c27f3ae0bce960bfc54d8e03957f9",
+      "sha256": "f5044f458be7bee9b6be506220944de9c45584443595d1359de0f75527e0ddc9"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example.unity",
+      "git_blob": "7495b76eb321dbc96f43ddaa85444aee6ac0af6d",
+      "sha256": "39016612ab7cdab3e2e083a4c0401b3a164ac593bf186ae973565690181bfefc"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example.unity.meta",
+      "git_blob": "1dac43f7d1980fa2ab55981b4ea73a928445d27b",
+      "sha256": "cbd8bf57cc162624e177b7f087c2af24eebeea032d2cbb8dd8eeea54bdd01532"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example/Lighting Settings.lighting",
+      "git_blob": "578147e45ba85a27789a06f88faaf0fe82c0ae64",
+      "sha256": "cb7002e0859871fa6ea6e4c449ec5f521b9f72515313b8eed4301808efe64a7e"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example/Lighting Settings.lighting.meta",
+      "git_blob": "7297e96ec42e3b382f94e1697bd89a73def98770",
+      "sha256": "c68a8088ce87c91fc7fdbf6ac134b1cb48d439ed06d6ce52ad47640a99eb09b4"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example/LightingData.asset",
+      "git_blob": "a47d70bdb36a1a523f52f084df39102d10997a05",
+      "sha256": "b75c4a936a520b86a61963f3c3cf09b999eb91118422c0625614fccf99b5b00d"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example/LightingData.asset.meta",
+      "git_blob": "b9e944549dcec4da351d5ae8a9a40dad612ce5ae",
+      "sha256": "933c18902fe3101f13cc7545ce89a902f2aea0fe1da29210ad68f00fdb954b3b"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example/ReflectionProbe-0.exr",
+      "git_blob": "e9f378703a61772a1e97392a258c07d94a51c86f",
+      "sha256": "e8b390a7dd392a941619586263cd8f432dd61bad682dff70d025668b739d7454"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Example/ReflectionProbe-0.exr.meta",
+      "git_blob": "f268b9b7b755f1c0212148afc32edaa0a334330d",
+      "sha256": "daee2e7ed47e97861c33f82187bed12835e5130335811a339c3aa7a1cc68e515"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Green.mat",
+      "git_blob": "7b0d402b1601229a9c72fc6e7d5569dbec3940db",
+      "sha256": "17c9df2e7520eba7428f083637f05f98e8280d9fb5bfa41658a95aa788e748dd"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Green.mat.meta",
+      "git_blob": "b4e7e27187ddbb3cbd878dabc0b5eaffa6ad7ba1",
+      "sha256": "5de9d11635b828fef8fd360d197ca0db7b9ad0e99a024e95a69d39edb191941e"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Muddy.mat",
+      "git_blob": "9634e2bf32a1e78d6b85f8ce6c544571e8fc4972",
+      "sha256": "5c3a85088479328b20f1c21a2962959a1278252316f834b4436286fac9f279df"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Muddy.mat.meta",
+      "git_blob": "9b173b84ffd8727668546f133bc1267e1de3672e",
+      "sha256": "bc7c0bb55c223fc75f8b7ad51af129f865be81815b590f418c4f52742c753fc1"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Red.mat",
+      "git_blob": "683182df1ab018183effa36c561e0a4cc6f301e4",
+      "sha256": "b82507c411107cc54450f888a5a5f1cb3bd134a88cfcb7543fcd6485b3bcd42e"
+    },
+    {
+      "path": "Assets/VWater/Examples/VWater Red.mat.meta",
+      "git_blob": "6dbfc45b4fe83fbdd088334c2c8e8d246c2fa4a3",
+      "sha256": "869f1c6be1ca356c2fb1f9a3997a6486eaa96be244d8581f7c697f12ce3735fb"
+    },
+    {
+      "path": "Assets/VWater/Extras.meta",
+      "git_blob": "abf57782568364d1cb1b5ea753454c7a679e1122",
+      "sha256": "acc2a127b58948b6f4ebdb8bf33f13aafae00d5d61c78aed431ce954d97bb889"
+    },
+    {
+      "path": "Assets/VWater/Extras/VWaterCrest.cs",
+      "git_blob": "5f3db22560212bccbf84677b532d9c357cbb5e7e",
+      "sha256": "5dda83cb0ce0c71819482b0021d914e8577333558b0bb32a67adf55ca0e44a16"
+    },
+    {
+      "path": "Assets/VWater/Extras/VWaterCrest.cs.meta",
+      "git_blob": "f3ba9878061784c7d8081af9c0bf726e886ce5cf",
+      "sha256": "9a9aa578f2778df377e196a84481ab485e9912f5e1d00656af2c83751adbf59f"
+    },
+    {
+      "path": "Assets/VWater/Extras/WaterHead.cs",
+      "git_blob": "a64f2b298906b8eeaa12d732255cf38f4aa80730",
+      "sha256": "6548465d8d8ddec7b42d8b83dfb36f5fda2a6b5ccb3683b9fc59329c16c227d9"
+    },
+    {
+      "path": "Assets/VWater/Extras/WaterHead.cs.meta",
+      "git_blob": "b6e5f645a7ed2152c44a90ee32bf00c67742d113",
+      "sha256": "8457614ef10bad3735cf4510168c7b9806f32d061736172a6f38cc81c23434b5"
+    },
+    {
+      "path": "Assets/VWater/Materials.meta",
+      "git_blob": "5d78d636a19a47890909f7eed47a6400cb76a434",
+      "sha256": "30a0cac8e1591ba20ffe936e206c7555f51f4069099cb60a58c3af6de6267bf0"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures.meta",
+      "git_blob": "1ee8c77aad6dcea12a754dd15f83fce76449b7d0",
+      "sha256": "5f6957a9e9c67ec42f16a3fd640963499e006c6678afb8308fb40b67d4813e84"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/Splash.png",
+      "git_blob": "bd8b5be45bb3a1ab2fd37e17161234f5f4f82c8e",
+      "sha256": "2e565fc489a07e74956edb4a63ad16687746a9fa95dcd39ff3b1378c418445e3"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/Splash.png.meta",
+      "git_blob": "5b00fcb4611f4fa5dc2a975e8cb7b17c8a7c63ac",
+      "sha256": "e4767c7bac457ceff7580b47003e2ba6059b93f8e7b5637480edde5c757f274a"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/WakeRing.png",
+      "git_blob": "4c2edbe9a128f5d0218cb33a2674dc89238495bb",
+      "sha256": "3ba5022ab38b1db6de0d08b35599a99d895d167fa95d086a7bfcf67f8c84d8a2"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/WakeRing.png.meta",
+      "git_blob": "1825f88d8e1c3929e2d198359bb85cff2b3251d2",
+      "sha256": "60575fa9d8f8ad51ca429b600c1d2180140342a121c234851969ba2755eaad2e"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/fakeBubble.png",
+      "git_blob": "509574e91db3ba0e98e4f010ec031dc7764cee82",
+      "sha256": "863c9f6ea7b65ce433b2131cb182a2da3cfa17b99fd5474ffe300ffd7250e8b2"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/fakeBubble.png.meta",
+      "git_blob": "42d75bc340548bdeb9ebe751c69ce848136e4e7a",
+      "sha256": "4189579bd1fb9ffc0855011dd3c6d5a40b836a22237c9a31b2f1a7b3834d6dd8"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/flowNoise.tga",
+      "git_blob": "dc7a914d75ec682ffd9b6a4153a2ed6a64183c7c",
+      "sha256": "ded446225ed46fc79645ed29cd1c037920941039e822d361389e2bdc24dd595c"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/flowNoise.tga.meta",
+      "git_blob": "dfd24966e66510eca0fab7d78f70c639972e5913",
+      "sha256": "b63d68d53dd0c8dce9e67942ed0cdd81e3f7fd22d19f576b3acab00929e9fe6a"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/foam Stylized.tga",
+      "git_blob": "295d68d5d4687f7c1a3b328eb765cca3fc04c3c0",
+      "sha256": "871e65993f024cc84c50d4be8bc90d3a4791224b6f0575263cbc892078107939"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/foam Stylized.tga.meta",
+      "git_blob": "c16edaf309f5d484d3dc2c9e8ea846505cbddc3d",
+      "sha256": "761f85cb0a15be107faa98c7c7b21e82f7cf91d20879c2ba2821919e5f716b8a"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/foam.png",
+      "git_blob": "9762c4a4bc9d052c4023db0fb128c2c9b88caaa6",
+      "sha256": "659ebcf3e2fe79272604618a39f8b1c98069d49a5c4dc741fd875d259dbe5816"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/foam.png.meta",
+      "git_blob": "d16570e1d1988df4e6208515d261878ed5de1922",
+      "sha256": "dc920ca1346efadc13c46acf70efa286dfb4bdac11758159603d01247c2a405b"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/perlin_noise.png",
+      "git_blob": "426d404e1efb524ec945f55ec663b1779ea389a9",
+      "sha256": "cb6466d967115ebd88c61e9c2f6de1feb8015e7b082dc996ce0b80e188998439"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/perlin_noise.png.meta",
+      "git_blob": "62e9690daa1516784ead48b9eaf20a46a4d444eb",
+      "sha256": "45c1ed470f1d683dcc3fd25a7b74ce94b082a1abf2b0e736d1b8aaef8f2ad514"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/splashatlas.png",
+      "git_blob": "4a670244bcb5dd65c2a3c57bc3f86c88fa39e35e",
+      "sha256": "e2b615ad29d1011880ce6e5dd27c5551eaf363ab6fcea4c68779fdd268106b2c"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/splashatlas.png.meta",
+      "git_blob": "97094b8ce829c7220ca59df8e8390fac7c1cf2e3",
+      "sha256": "5020bbb106bfbb6ff8e339eea65337dc2892a2fa78191518ba02c6e55261ac8c"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/splashatlas_thicc.png",
+      "git_blob": "20d1ef0ff3611b3ce543233d8e812e8c0ab8cce0",
+      "sha256": "80dbc8ff6ee21841a62618d760fea26ee6e34c4c5d46aa31651bb4a84b328ddc"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/splashatlas_thicc.png.meta",
+      "git_blob": "4c492ac0cd5ed45b9b430229889c53568235f8ab",
+      "sha256": "f04367a894adc458618f4e36947a8408bf4c51698fdbef29d6c46fbfb270269f"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/vwaterBubble.png",
+      "git_blob": "3023213eaae881400ebc711c9199537d71ab53c1",
+      "sha256": "e18907b7ca5db9aeea9a13ea1b1be7a825389962ddd97968a28a8187d9f0f9fa"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/vwaterBubble.png.meta",
+      "git_blob": "9ce77ae12bd99b7d5b7ae9a02d169f68cff6fc7a",
+      "sha256": "3f81049969f0dd02eed89ed4d6dfbca2a9c1234dd9b591ea84618bc74219bccb"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/vwaterBubbleNrm.png",
+      "git_blob": "19740ad289f5b757850b358e648d83f93f1a4fdd",
+      "sha256": "42b6148edcaa376182e63a2287952a20e26483413b8a63e90cc4c558218bae5e"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/vwaterBubbleNrm.png.meta",
+      "git_blob": "fe2543946a54a46ad75c40cc753b17cca1d87aa7",
+      "sha256": "28cd42811aa88b485411631748b40535ab6a52405a930e2e2c3c6a025410b40e"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/waterScatteringPrecomputed.png",
+      "git_blob": "f878f0df3be1aa82ba112e7ab5590a20b01e4311",
+      "sha256": "dacc966292d761a99ed525fcd8b96f45dceea050e8c77af894251de9e36bba8e"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/waterScatteringPrecomputed.png.meta",
+      "git_blob": "bbedbe5e12d003a705485910ac81892659573534",
+      "sha256": "8c6954d1e35617c0baa0ad082ff7e97d7f996d788fd1ac5cdff15402f5d0565e"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/waterScatteringPrecomputed_aniso.png",
+      "git_blob": "c71bb04e309e1f12ea0c329e350b86f5a0699d16",
+      "sha256": "fcec077600f16966f2edcec1548ea73a08d9bed2dd1052b840ef0f22103a19cc"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/waterScatteringPrecomputed_aniso.png.meta",
+      "git_blob": "8fa046171f0e614b0c2b88cb0d8d9a9e51a56658",
+      "sha256": "acebb4687e536196a92e36db2759100e3f038a7e8f870d16c445064061c76410"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/water_NRM_choppy.png",
+      "git_blob": "46a6744eb4bb7382283a80bfb390345bca4d9fc1",
+      "sha256": "a4af0a41df9661c4e535f8eead6e1ff86b72bf913aaa23ba63f249179886448b"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/water_NRM_choppy.png.meta",
+      "git_blob": "801d2a2cf8089dba8378397499dc125fa0b23986",
+      "sha256": "5043173b90ca1fb525d6d587af94b6f6075d12fd5b0106fb680c96857a771dc7"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/water_NRM_smooth.png",
+      "git_blob": "65fb98024bb1c7bdd757b3d49d69d6b169876b95",
+      "sha256": "01890e3b62f4ba6e167416cda0d8304df93809deff1e0669b82f816b8dcc12b4"
+    },
+    {
+      "path": "Assets/VWater/Materials/Textures/water_NRM_smooth.png.meta",
+      "git_blob": "fb8534bcbca0af5641e9be742f6a62b2a6e71b49",
+      "sha256": "95121ef77d09fa936290b88c5d31c24d7691d1e71c4aac12653977da875665ba"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Bottom.mat",
+      "git_blob": "a18d180384dbae41df7d671190953a33e92ad112",
+      "sha256": "05a2b08dbe8cbfcd54ba45be9f777a5e9fa9ad849081b5cf5938cfe3fa04c8ea"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Bottom.mat.meta",
+      "git_blob": "7fa5804e41ac5923ebae9f8b88d11de34769996c",
+      "sha256": "0f7917f18321284ead29cca5bfb06bcf0d708cd46a81894739552133480dd48e"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Bubble.mat",
+      "git_blob": "dea481f60e44d28e62d6d08ed7952a4ad80fc858",
+      "sha256": "07ba993ae93740e037ce08e596715e287eee874d68f14546c44d724f3ffc51ca"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Bubble.mat.meta",
+      "git_blob": "d0cfd4d7b4a5b240eabb5573f2df2ea5d55c6f49",
+      "sha256": "5f16965e3f3f8701b2921b9612e592d9edda1b6ac22e34819914d94458967e4f"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Deep.mat",
+      "git_blob": "2c5c844513cdb15a9d8eefcada21d9b046f53f76",
+      "sha256": "3c85c46a90888f36789d1904cefd5d5e2314ebe3a0e3827893f3dfdf5cf73baa"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Deep.mat.meta",
+      "git_blob": "aa0231f4ed15f0ef4f38c281c367728238f05dd5",
+      "sha256": "17690c891595e1a47edbf4f6280f3db9ad4bc7f3ce96b0c5d4a67200d772d14d"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Default.mat",
+      "git_blob": "8aae5164fbee184cf5d64760be58264b91a76e8e",
+      "sha256": "d83ae8116c4ef96ae7b6bd74e696d28e0d66e382824f6dde6d30eb5ff78e0433"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater Default.mat.meta",
+      "git_blob": "c5dd021a9a12164b779a493bf38b585f0dbe6d7b",
+      "sha256": "579dcbfa6b555292e5ce7ff096d5b12266a99a9be2c3fc8104717009f2189dc7"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWaterMask.mat",
+      "git_blob": "da389dd316ba72a11e6042a3d1662d7d206f69f0",
+      "sha256": "2dc04d3d424edbda1a2632812a0d45dc24b05ebab409bc724714f9fe73650016"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWaterMask.mat.meta",
+      "git_blob": "5492b70b305a6edb42b1185ba241d61160f18fde",
+      "sha256": "3a2719fd8b20363fe935c9137387bbd4a65ce661a1252958b0d4bdf0c2d7d730"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater_View.mat",
+      "git_blob": "860e6c0924e8013488059f5ff8fddad4daa4d30a",
+      "sha256": "32ac47aecf12a85df4b839ab862deee4226c78abfa8e5e688bf2ad5fe42d8f0e"
+    },
+    {
+      "path": "Assets/VWater/Materials/VWater_View.mat.meta",
+      "git_blob": "c43a6c6d747fdbde708179bdd219d4940028b7e9",
+      "sha256": "0846d4be977a97813950037dd7a05bd71b98a138ab68295abd0b54faac4fa762"
+    },
+    {
+      "path": "Assets/VWater/Materials/WakeRing.mat",
+      "git_blob": "e4c8cdc78f924452259a0cba1d03aa6810a88817",
+      "sha256": "c8c001de53488187b910affa0a927a1182d136d49f565cac82ffa9baef6bbc76"
+    },
+    {
+      "path": "Assets/VWater/Materials/WakeRing.mat.meta",
+      "git_blob": "55da40ef4366379d3fb9643ee7e13708964ba66c",
+      "sha256": "89f4cdb832f861683e6b6b68f5750d731992b3c81953343dd4e0add320aeb6a1"
+    },
+    {
+      "path": "Assets/VWater/Materials/WaterDrop.mat",
+      "git_blob": "88c052fdc91dc65659f500ba39a72baa2ec664cd",
+      "sha256": "94456c4443d3c919abfb0a4232c1c28fbb8e4eab51004a1338607a8b154d152e"
+    },
+    {
+      "path": "Assets/VWater/Materials/WaterDrop.mat.meta",
+      "git_blob": "c1608fe7c7c54709542ee4f1e573648f450da354",
+      "sha256": "2a99fe9cd3092664490054f94833a6c8fb51f356857da147f4d25bb5585813b7"
+    },
+    {
+      "path": "Assets/VWater/Materials/WaterSplash.mat",
+      "git_blob": "7dfba0e092b69d2eac8b38b0b990c14ecdf8f794",
+      "sha256": "bd766c0eee8646418dc1f1c4e5d8d854e2d0de9b8784d606ee8e181b6dd1c52f"
+    },
+    {
+      "path": "Assets/VWater/Materials/WaterSplash.mat.meta",
+      "git_blob": "459a721facff091aa3a1596b8912cf7df1bfb45c",
+      "sha256": "0e4406280eaa4a42876064623052c950a887959ef937c0cf01571fc200e56662"
+    },
+    {
+      "path": "Assets/VWater/Materials/WaterSplashAtlas.mat",
+      "git_blob": "846876c1ca2fca4aef63c162e1b5a4e49fbb04a4",
+      "sha256": "0e03cf4195533686b71657b1f6381692ccc7bf43371301def8d0392258ba74eb"
+    },
+    {
+      "path": "Assets/VWater/Materials/WaterSplashAtlas.mat.meta",
+      "git_blob": "6409b2f773f46ff99f825604a58f75060c6feae3",
+      "sha256": "0947a74bbffca082769af78521d7607f903fc7ce8fa77e10f51c081b3ce4c529"
+    },
+    {
+      "path": "Assets/VWater/Prefabs.meta",
+      "git_blob": "fab9c0329b1bc0420eec09a14d885e4f81ef7d68",
+      "sha256": "cc03a7fad2857f0ea8bc94a81883bf725ac0df33f364618af1c88bd3a07f3401"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/BulletSplash.prefab",
+      "git_blob": "1c56b18487f3480ddeeb7c71e747af1b27723b7e",
+      "sha256": "42e6e187a534d2ac144c02ed93079a0d89740c3051ee18f44db5fd0d84fd90e6"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/BulletSplash.prefab.meta",
+      "git_blob": "70cc425b08c20ed9229d8cc37585c7e1a73c1abd",
+      "sha256": "d15572f4272936ca7ce8215e0d7f1d832326d062e63e2c58abff337ed7b67261"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/FootstepSplash.prefab",
+      "git_blob": "68e88cd5377c894050a3b1c0aa9ef90c79490684",
+      "sha256": "b979f5379426a34cdb575f5dd13ab6aad3699938bb7922bed134b73b057f9b2b"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/FootstepSplash.prefab.meta",
+      "git_blob": "e94bea17413b18540f41d4fe62da660eac044e81",
+      "sha256": "b1a954110b4a1176afec8b6e77829bcca999c50a07b0f0e5c3431858a1b84578"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/Splash_Large.prefab",
+      "git_blob": "86ddab263d9c60bcd151645718a0e5b5efbe493d",
+      "sha256": "b6ae3c7f07da1dd8be472a99701052eff830ad639b2aa471e3275aee522883d4"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/Splash_Large.prefab.meta",
+      "git_blob": "d436981bc2f61108d85fb6481cea143ea78e9c08",
+      "sha256": "00de1d2dd9ce662677ea71da94abb8a1f12b3c1e06b36dcd3163a2dec0bacdfd"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/Splash_Med_Heavy.prefab",
+      "git_blob": "30e371b21200a3e73d73111fbc931c6e8985cbdb",
+      "sha256": "5d74d9e3b253526aa776417cecbb77fb65984bafd91b6d04695e4e3073dc1164"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/Splash_Med_Heavy.prefab.meta",
+      "git_blob": "0ee9ef3152d364266f76d12967bb75576c8d11fa",
+      "sha256": "d1a6565c6c8614d7095a9fdd4e66f8a6beaa13ed33ff48064d4443cac275e55b"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/Splash_Med_Light.prefab",
+      "git_blob": "3fee58dac1cc506f8a86362aaca24ab4b0a78774",
+      "sha256": "944cd8f393c8662bf51f529b60f640176ed9b9b9559d725cd8fab15b0d1dadd3"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/Splash_Med_Light.prefab.meta",
+      "git_blob": "c068653821766a9b38f417d3e926e507e4d2ae38",
+      "sha256": "6d1f2507ec2ac2c33afc11f25aa6568e0da453728e20ded84b00480965f70d94"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/VWater.prefab",
+      "git_blob": "4cbbce2c3928e1994bd29758a81e8662ee45a4a8",
+      "sha256": "7468ec54a7dddd5ab069f71e79f2565ee6b1976eb714f3ab49e562ea0763ed1b"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/VWater.prefab.meta",
+      "git_blob": "0ad6ce3255f98de99947e031c5cc7b5edb23b48c",
+      "sha256": "965bfa963959ddb35949daf97d0d88a0e99c01efa0572c65f52471f0eaafc676"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/WaterManager.prefab",
+      "git_blob": "ec390a8c00f092ee14edade60a1b3379114b7a0b",
+      "sha256": "3e26d07b5681399cbfce4ce45cd68f3c48846bf394538be19aee6108743fc716"
+    },
+    {
+      "path": "Assets/VWater/Prefabs/WaterManager.prefab.meta",
+      "git_blob": "231ac66995bbfad0fe6c5f3b361f410ef3dfe270",
+      "sha256": "3bd2831612e799ccc497835c1ddf9c9804da861e7fec3aca683ea61378237f9a"
+    },
+    {
+      "path": "Assets/VWater/Scripts.meta",
+      "git_blob": "de8a956ee1e5ad8f1946bad2d700bd8d649c7f9b",
+      "sha256": "f4c200984e2c170fff54b1716134c3e6b8a408ba4fd34e156b1f25ed31c5318e"
+    },
+    {
+      "path": "Assets/VWater/Scripts/CameraEvents.cs",
+      "git_blob": "cc0ca92797c79a0f95b293bfd145f90d32ce8559",
+      "sha256": "301760eea7f874ee3d7fc349f98e5471f96c8f34cee3db74528ae0a4ca66259b"
+    },
+    {
+      "path": "Assets/VWater/Scripts/CameraEvents.cs.meta",
+      "git_blob": "ed5ef6858e23c78b7b96a6168f9e3f6d9c8ae0af",
+      "sha256": "00324fcd531814754db9a3bee4f10c7a6741f8d99fa45901e4de464324f80b16"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWater.cs",
+      "git_blob": "5d4f2905a8540bbe9c3842476beb1da3cccc28fe",
+      "sha256": "fc40a77d9a0e48261cb8beefb32b7e38c9c9acf8e8d15c19b0ea1dbfa6509829"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWater.cs.meta",
+      "git_blob": "704f79ded4096902e532447f331582c23c1104c1",
+      "sha256": "d18d46f2f8eb745ad0d25b5b665001a582a07207c9eb907106e67c8359587452"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterBase.cs",
+      "git_blob": "5f51437b2e626675c8d096c297289defbaa42462",
+      "sha256": "16f96ac76c14adc076e19993cf7b949d727536311a2823f510ad2c51cf151528"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterBase.cs.meta",
+      "git_blob": "40ebad0904b9d78192406543f52cdaac5b5e7cbb",
+      "sha256": "c886cc0bc9166d744fefa8f8d309b73414e9f9503e948588967eb78782e021df"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterBody.cs",
+      "git_blob": "48f656cec6d841bf83ce76e6f098854321f03c17",
+      "sha256": "789c4834b8d90dab8453b2cae90138c9172204956590c6dca7461a6cd64c52f0"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterBody.cs.meta",
+      "git_blob": "9865ad6b71850057a7a562d2ad1c2864d1255713",
+      "sha256": "be4e4f3180a738b7ad7d513308fce20e267bf5d2f24d9af8062b4da67f5c6a87"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterDynamicFlowSource.cs",
+      "git_blob": "1a90d96d68a2f014c5c2055c1bdaed7b292dda02",
+      "sha256": "51323c00b5914b0df01f080e98093ddeb6f17a3dc7f249c5478df108a949851c"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterDynamicFlowSource.cs.meta",
+      "git_blob": "eb7057679ff70a18bda64e5d7895d0bfacf9e8f6",
+      "sha256": "98f55f647b8565503e7eba907750ec297e4ce31304cd3cb753b6c8ff617c4da9"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterDynamicsManager.cs",
+      "git_blob": "232fe2e3bf541e2cb2158e058be314b85eb9824b",
+      "sha256": "2424c4a9717e4be4876ab3d58d1b6cf1f3c7765ef3bcc8bf984b50b939e45f10"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterDynamicsManager.cs.meta",
+      "git_blob": "4840540522f5e51276237978ae5cd3187c6d965f",
+      "sha256": "3e5177b4084c81cd89be16e03f96e08a9be30911459b91f45daec9c407ed5125"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterManager.cs",
+      "git_blob": "c1249a9e4e970c47fa88f6be33552ecdb5008933",
+      "sha256": "00b0f06f6010ab515f5f5fe526cba747a2bd605100ec71e8904a2f98b0394d2f"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterManager.cs.meta",
+      "git_blob": "bc5a1ea6bb5e1a3bd255e5f0135d81cc5fc84ed8",
+      "sha256": "e68bb8569d39b631e981762f73bbd2f550f61ebd70be856d4bfbb3ddfb4164a1"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterMask.cs",
+      "git_blob": "37a831302d2a540d3dfe432cd8b4d78e1fb9052d",
+      "sha256": "96847c04e18846b1d2d38972de26d7b20d3e8ad11b0f981c59b13cb85cd4e942"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterMask.cs.meta",
+      "git_blob": "dd7bfc4d91409ee970b1758949a4d3d42c82cce3",
+      "sha256": "cf2d8c1abd03c592bfac9b025ce06162267fe49c1aa9010535c2502d8aa9e895"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterOverride.cs",
+      "git_blob": "5f4939e472460f98564ec6209f37764e049b3cce",
+      "sha256": "dfe7c4a0ad3e184c613fde5d91132358d50ecdfbc57477865257b282ae1379b0"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterOverride.cs.meta",
+      "git_blob": "30dfe2ef03ee64da870cbc1e6e2c2d4d2878deeb",
+      "sha256": "f4f7a4e9d6a58a2c26f36b96825fdc63528d20ab538cc50fddc12f5e1e12fa02"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterRenderer.cs",
+      "git_blob": "d5635816f97cf5739a9db11adbf8ad880c182ae2",
+      "sha256": "2c0a77d956f79d2ba81fd94a2ab767e60d459eab8c2b84c51628155acaaf7e51"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VWaterRenderer.cs.meta",
+      "git_blob": "4e7d6bdadf8fcf2b26f0ee4e7c2a15b715a8bba5",
+      "sha256": "9ad6e1297df2c0e445d65905e34b0102332be3faa439e42511403e9b88ecbfb0"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VelocityEst.cs",
+      "git_blob": "aeb1d14f12e259af1b4c9ee1a21a55637fbd2ebe",
+      "sha256": "da61b8a7896f9e14836d92be201bb7b5792843658305af32929fc6a3778ae43d"
+    },
+    {
+      "path": "Assets/VWater/Scripts/VelocityEst.cs.meta",
+      "git_blob": "fbed65eb1c3772b771828088834e3fce3bcb5584",
+      "sha256": "9fbd8253dcbbb8914247c4239e11f3b0d518cd4ac3c0bb74dda350687faf31cc"
+    },
+    {
+      "path": "Assets/VWater/Shaders.meta",
+      "git_blob": "7786dcccfd306cf49159d0765a5a7951e8829915",
+      "sha256": "8e8217b7aa9b424cc2ec29509698dffc9de131e169f697355e4d766b06362f32"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterBottom.shader",
+      "git_blob": "3d633763512b8692c6237b9141a7bb2b8640fe5d",
+      "sha256": "4c0e66b790c23b8332b19eefd0f8ac56089891a5cd3077a84e03366f501b2611"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterBottom.shader.meta",
+      "git_blob": "12954468750d5df57bb243a760119a7646ef3c5a",
+      "sha256": "4990a44806167feb8ec5167c01d431120da0eb4d58b4b2c3930bc82aaa0a3c1f"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterBubble.shader",
+      "git_blob": "0305a26b60e174746c7e6ff482362ba176a70942",
+      "sha256": "c7362f85ad298f7ee0705c12424aee1145112780f60131149168109373e9c32e"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterBubble.shader.meta",
+      "git_blob": "5c4694a5b23bfb8d83c89af7443ec1e8ac93aaeb",
+      "sha256": "d7357fa0271beda6626f0c203b566482c488674417b26a6bf32806d856419ec2"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterCompute.compute",
+      "git_blob": "293b6d47ce6d331a9481014066823c455a350e75",
+      "sha256": "df94165c88fd605b96605d9d8aa665d0f4aa9cbd0f40080d48ed252e47bff16c"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterCompute.compute.meta",
+      "git_blob": "717fc7730b0663f02440805775bacf9851d69faf",
+      "sha256": "534b1b9cce79295a276c41800183fd3dbdd7c49b25e3d3b2b3c62a0a21b2c560"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterLighting.cginc",
+      "git_blob": "dc5e08c417c3e8ab88ff68a47d3dbba0dd2e0e2d",
+      "sha256": "348cedc01d5a9224ff4947406f9424e157d716da681b768888496f18e23b26ec"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterLighting.cginc.meta",
+      "git_blob": "b511223a5d0e0aa1f2c73996a32994e2b756029e",
+      "sha256": "edf73d82bd4f2b4384dde8cecff881c19bef29c5faf7d618a891f0dddcbed59c"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterMask.shader",
+      "git_blob": "f545178fd757165d68999f34ba258d3138b371c8",
+      "sha256": "4a6e12dbb4247a77bb7602432d905d3931e6ebaec35fe01679f16e6d669fd4f8"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterMask.shader.meta",
+      "git_blob": "fd0677301a3171e60b3936d2db5a4b6cdd49849d",
+      "sha256": "0dcf47608b3612593fe85e7457846426c101982d4a3c99dd2bf490302eacff75"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterSurface.shader",
+      "git_blob": "c3eb6c23aff6d545fe3f087cf39f376689a72ef4",
+      "sha256": "7522c4b9fc7378220dd3c7f16656c0de56aac027c2a635e8773e9d7a0f0796d4"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterSurface.shader.meta",
+      "git_blob": "9c1b0fbb9db8fd4538228910142a051cbb47025c",
+      "sha256": "e390102999df78660e564731b32d3cbfb43acc2b6ff22bb76e627c61ed075bb6"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterView.shader",
+      "git_blob": "3b450210074d031ded94b47d2f5f4e1380f16131",
+      "sha256": "c8b621e700fe85b5e5f261f57887b8a554a6c7cbb76c8179c23ba660cfcc8a3a"
+    },
+    {
+      "path": "Assets/VWater/Shaders/VWaterView.shader.meta",
+      "git_blob": "1d2e8d33475e9df6f1736978c7fa2d15458038a3",
+      "sha256": "2f527fcaefa217cd912da6d737adfe69a21536c0a6db91082feb4f4034bce68d"
+    },
+    {
+      "path": "Assets/VWater/Test.meta",
+      "git_blob": "a008850fff957985802d22ea998697f7de38dcf5",
+      "sha256": "88cfef81010306d4cf862c9dca186ae83fdfe049d46c055311df94c3e3ca0860"
+    },
+    {
+      "path": "Assets/VWater/Test/WaterRippleTest.cs",
+      "git_blob": "9cd8a4c364e5126f1e999e4f04d835728786aa32",
+      "sha256": "746b1c056508a8c4ec7ed388fe32bb8d850eab3ee8a6fb3d5123013a2f25c63e"
+    },
+    {
+      "path": "Assets/VWater/Test/WaterRippleTest.cs.meta",
+      "git_blob": "2cf06f0b7a1e5b7a5c1c6769edf6632666bbbe1b",
+      "sha256": "9ade5bf05bcf197e7c6326884589f8047669e384b920ad08196ce4a83680da77"
+    },
+    {
+      "path": "Assets/VWater/Test/waterTest.unity",
+      "git_blob": "e6dd60984d68111c467312cfbf31a2ddb2fc9eca",
+      "sha256": "c5064f7197be6386c6674e9f1626bc70025462a677749a17d4052096e2c432a5"
+    },
+    {
+      "path": "Assets/VWater/Test/waterTest.unity.meta",
+      "git_blob": "11159fe166532d0a2f604819850c86241f9ffb61",
+      "sha256": "d489d5cdb305559fdceb4daecb28442bb8f2789895e97f08723eeaa4d478ff16"
+    }
+  ],
+  "unresolved_nonbuiltin_guid_references": {
+    "Assets/VWater/Examples/Models/Rowboat.prefab": [
+      "3715147abc749864c84242515bcaa390",
+      "63b55da5806c86247982b3a806a8ab9a",
+      "ca0cff1d87336fe4b8ac0f3d0eec960b"
+    ],
+    "Assets/VWater/Examples/Models/RowboatOar.prefab": [
+      "3715147abc749864c84242515bcaa390",
+      "63b55da5806c86247982b3a806a8ab9a",
+      "ca0cff1d87336fe4b8ac0f3d0eec960b"
+    ],
+    "Assets/VWater/Examples/VWater Example.unity": [
+      "0cd44c1031e13a943bb63640046fad76",
+      "5f7201a12d95ffc409449d95f23cf332"
+    ],
+    "Assets/VWater/Materials/WakeRing.mat": [
+      "92c78246837a4f159459f5810ad05827"
+    ],
+    "Assets/VWater/Materials/WaterSplash.mat": [
+      "292b63a52893ddb48bff9797d47d6a9b",
+      "5d9c559743d40654ba6b6901b555e7cc",
+      "92c78246837a4f159459f5810ad05827"
+    ],
+    "Assets/VWater/Materials/WaterSplashAtlas.mat": [
+      "b8ee2b6d93784ef7be35cd486061fd66"
+    ],
+    "Assets/VWater/Test/waterTest.unity": [
+      "26bed30b526b1e546b623ec83d5147b6",
+      "5d0d71238b38a4a38b35b955fbf5c019",
+      "6c3e479b8f860474da3176c145a4a5a4",
+      "883b202ae7357d1468756142b15540e9",
+      "c6996e7a329a4184c99e2289bab2d3fb"
+    ]
+  }
+}

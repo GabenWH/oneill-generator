@@ -1,0 +1,149 @@
+{
+  "assets": [
+    {
+      "guid": "44ea28d813b60b245abc00179b3b5c25",
+      "sha256": "c7362f85ad298f7ee0705c12424aee1145112780f60131149168109373e9c32e",
+      "sourcePath": "Assets/VWater/Shaders/VWaterBubble.shader"
+    },
+    {
+      "guid": "a0dea42ebbe424e8293f6bd6b3fd0e08",
+      "sha256": "7522c4b9fc7378220dd3c7f16656c0de56aac027c2a635e8773e9d7a0f0796d4",
+      "sourcePath": "Assets/VWater/Shaders/VWaterSurface.shader"
+    },
+    {
+      "guid": "c06f9dac1ade846789c4743d0309b619",
+      "sha256": "4c0e66b790c23b8332b19eefd0f8ac56089891a5cd3077a84e03366f501b2611",
+      "sourcePath": "Assets/VWater/Shaders/VWaterBottom.shader"
+    },
+    {
+      "guid": "1a89ce45738b14547b6555f0d030fd74",
+      "sha256": "4a6e12dbb4247a77bb7602432d905d3931e6ebaec35fe01679f16e6d669fd4f8",
+      "sourcePath": "Assets/VWater/Shaders/VWaterMask.shader"
+    },
+    {
+      "guid": "c842692fb1c204474a8418a73dcd49bb",
+      "sha256": "df94165c88fd605b96605d9d8aa665d0f4aa9cbd0f40080d48ed252e47bff16c",
+      "sourcePath": "Assets/VWater/Shaders/VWaterCompute.compute"
+    },
+    {
+      "guid": "6ba199d5512ebab429376e099fd599e9",
+      "sha256": "348cedc01d5a9224ff4947406f9424e157d716da681b768888496f18e23b26ec",
+      "sourcePath": "Assets/VWater/Shaders/VWaterLighting.cginc"
+    },
+    {
+      "guid": "d3f2000a8dc864627b583f8a79bff6f2",
+      "sha256": "c8b621e700fe85b5e5f261f57887b8a554a6c7cbb76c8179c23ba660cfcc8a3a",
+      "sourcePath": "Assets/VWater/Shaders/VWaterView.shader"
+    },
+    {
+      "guid": "a4149d1c9ee334140956059ede822a2b",
+      "sha256": "789c4834b8d90dab8453b2cae90138c9172204956590c6dca7461a6cd64c52f0",
+      "sourcePath": "Assets/VWater/Scripts/VWaterBody.cs"
+    },
+    {
+      "guid": "ed0f3277633b1e34195bc84b057ba6a0",
+      "sha256": "dfe7c4a0ad3e184c613fde5d91132358d50ecdfbc57477865257b282ae1379b0",
+      "sourcePath": "Assets/VWater/Scripts/VWaterOverride.cs"
+    },
+    {
+      "guid": "c38873241064bf94d8c1c38944b45228",
+      "sha256": "51323c00b5914b0df01f080e98093ddeb6f17a3dc7f249c5478df108a949851c",
+      "sourcePath": "Assets/VWater/Scripts/VWaterDynamicFlowSource.cs"
+    },
+    {
+      "guid": "fd137219cf24c974c9a3134c7c2c3fa0",
+      "sha256": "301760eea7f874ee3d7fc349f98e5471f96c8f34cee3db74528ae0a4ca66259b",
+      "sourcePath": "Assets/VWater/Scripts/CameraEvents.cs"
+    },
+    {
+      "guid": "03cf62bc2541e0748bf35a976cf869c9",
+      "sha256": "fc40a77d9a0e48261cb8beefb32b7e38c9c9acf8e8d15c19b0ea1dbfa6509829",
+      "sourcePath": "Assets/VWater/Scripts/VWater.cs"
+    },
+    {
+      "guid": "7a6e25123c06e944eb54aa7d160377d6",
+      "sha256": "2424c4a9717e4be4876ab3d58d1b6cf1f3c7765ef3bcc8bf984b50b939e45f10",
+      "sourcePath": "Assets/VWater/Scripts/VWaterDynamicsManager.cs"
+    },
+    {
+      "guid": "c9bf1a669d77e7b44809085b403bf745",
+      "sha256": "da61b8a7896f9e14836d92be201bb7b5792843658305af32929fc6a3778ae43d",
+      "sourcePath": "Assets/VWater/Scripts/VelocityEst.cs"
+    },
+    {
+      "guid": "6efd3e2327d8b4f488a35ddffb6a7630",
+      "sha256": "00b0f06f6010ab515f5f5fe526cba747a2bd605100ec71e8904a2f98b0394d2f",
+      "sourcePath": "Assets/VWater/Scripts/VWaterManager.cs"
+    },
+    {
+      "guid": "3b185c4d2a3cd074899db62c6688b19a",
+      "sha256": "96847c04e18846b1d2d38972de26d7b20d3e8ad11b0f981c59b13cb85cd4e942",
+      "sourcePath": "Assets/VWater/Scripts/VWaterMask.cs"
+    },
+    {
+      "guid": "a7489aa955bde49bc8920fcc0a842a57",
+      "sha256": "2c0a77d956f79d2ba81fd94a2ab767e60d459eab8c2b84c51628155acaaf7e51",
+      "sourcePath": "Assets/VWater/Scripts/VWaterRenderer.cs"
+    },
+    {
+      "guid": "ddecea3f446494f42acd75fc081adb0a",
+      "sha256": "16f96ac76c14adc076e19993cf7b949d727536311a2823f510ad2c51cf151528",
+      "sourcePath": "Assets/VWater/Scripts/VWaterBase.cs"
+    },
+    {
+      "guid": "b10e7b39c12e70c46bcfdd8a0527cd2e",
+      "sha256": "746b1c056508a8c4ec7ed388fe32bb8d850eab3ee8a6fb3d5123013a2f25c63e",
+      "sourcePath": "Assets/VWater/Test/WaterRippleTest.cs"
+    },
+    {
+      "guid": "8cf8cb914cce2204b8d950543579440b",
+      "sha256": "6548465d8d8ddec7b42d8b83dfb36f5fda2a6b5ccb3683b9fc59329c16c227d9",
+      "sourcePath": "Assets/VWater/Extras/WaterHead.cs"
+    },
+    {
+      "guid": "c34d75a789407084bb4c48de6d917829",
+      "sha256": "5dda83cb0ce0c71819482b0021d914e8577333558b0bb32a67adf55ca0e44a16",
+      "sourcePath": "Assets/VWater/Extras/VWaterCrest.cs"
+    },
+    {
+      "guid": "db8139fc50a0c48fd949ee7594cc977c",
+      "sha256": "01890e3b62f4ba6e167416cda0d8304df93809deff1e0669b82f816b8dcc12b4",
+      "sourcePath": "Assets/VWater/Materials/Textures/water_NRM_smooth.png"
+    },
+    {
+      "guid": "c9f3a590d0e6c45629d6d810b88918a2",
+      "sha256": "ded446225ed46fc79645ed29cd1c037920941039e822d361389e2bdc24dd595c",
+      "sourcePath": "Assets/VWater/Materials/Textures/flowNoise.tga"
+    },
+    {
+      "guid": "2c3a5c50e55575b43a806489841e69ff",
+      "sha256": "659ebcf3e2fe79272604618a39f8b1c98069d49a5c4dc741fd875d259dbe5816",
+      "sourcePath": "Assets/VWater/Materials/Textures/foam.png"
+    },
+    {
+      "guid": "f7d09682866196346b7d91bbf6b27c29",
+      "sha256": "7468ec54a7dddd5ab069f71e79f2565ee6b1976eb714f3ab49e562ea0763ed1b",
+      "sourcePath": "Assets/VWater/Prefabs/VWater.prefab"
+    },
+    {
+      "guid": "d29a0edaa689517438449c157e721a37",
+      "sha256": "3e26d07b5681399cbfce4ce45cd68f3c48846bf394538be19aee6108743fc716",
+      "sourcePath": "Assets/VWater/Prefabs/WaterManager.prefab"
+    },
+    {
+      "guid": "4475b773f48a84c16a5a87ccf749da1a",
+      "sha256": "d83ae8116c4ef96ae7b6bd74e696d28e0d66e382824f6dde6d30eb5ff78e0433",
+      "sourcePath": "Assets/VWater/Materials/VWater Default.mat"
+    },
+    {
+      "guid": "ad8378ddba9764d8295fa35d926ee228",
+      "sha256": "05a2b08dbe8cbfcd54ba45be9f777a5e9fa9ad849081b5cf5938cfe3fa04c8ea",
+      "sourcePath": "Assets/VWater/Materials/VWater Bottom.mat"
+    },
+    {
+      "guid": "8a6529b75b1fe468ca02924d4712290d",
+      "sha256": "32ac47aecf12a85df4b839ab862deee4226c78abfa8e5e688bf2ad5fe42d8f0e",
+      "sourcePath": "Assets/VWater/Materials/VWater_View.mat"
+    }
+  ]
+}

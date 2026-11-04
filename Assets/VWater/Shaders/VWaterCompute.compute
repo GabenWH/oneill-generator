@@ -1,0 +1,137 @@
+﻿// resolution of water buffers
+int BUFFER_SIZE;
+
+float deltaTime;
+float time;
+
+// position of water universe in world space
+float2 worldPos;
+// size of water universe
+float worldSize;
+
+// a flow map to add some chaos to the dynamics
+sampler2D _FlowMap;
+// scale of the flow map
+float flowScale;
+
+
+#define FLOW_SOURCE_MAX 4
+
+// can't pass arrays of structs, so separated flow sources into pos, radius, and amplitude arrays
+half2 fsPos[FLOW_SOURCE_MAX];
+half fsRadius[FLOW_SOURCE_MAX];
+half fsAmp[FLOW_SOURCE_MAX];
+
+#define SKIM_SOURCE_MAX 4
+float4 skimPositionRadiusAmplitude[SKIM_SOURCE_MAX]; // x,z,radius,signed amplitude
+float4 skimVelocityFoam[SKIM_SOURCE_MAX]; // vx,vz,foam,active
+
+
+
+#include "UnityCG.cginc"
+
+// convert pixel index to standard UVs
+float2 IDToUV(uint3 id)
+{
+    return float2(id.xy) / float(BUFFER_SIZE);
+}
+
+// center UV coordinates at 0,0
+float2 UVToCenteredCoords(float2 uv)
+{
+    return uv * 2 - 1;
+}
+
+//convert UVs to pixel index
+uint2 UVToID(float2 uv)
+{
+    return uint2(round(uv * BUFFER_SIZE));
+}
+
+// convert UVs to world position
+float2 UVToWorld(float2 uv)
+{
+    return (uv - 0.5) * worldSize + worldPos;
+}
+
+float2 WorldToUV(float2 uv)
+{
+    return((uv - worldPos) / worldSize + 0.5);
+}
+
+
+
+// Avoid undefined out-of-range GPU reads at the simulation boundary.
+int2 ClampIndex(int2 p) { return clamp(p, int2(0, 0), int2(BUFFER_SIZE-1, BUFFER_SIZE-1)); }
+
+#pragma kernel CSWater
+RWTexture2D<float4> WaterBuffer;
+RWTexture2D<float4> SourceBuffer;
+RWTexture2D<float4> OldBuffer;
+
+[numthreads(32,32,1)]
+void CSWater(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= BUFFER_SIZE || id.y >= BUFFER_SIZE) return;
+    int2 center = int2(id.xy);
+    int2 north = ClampIndex(center + int2(0, -1));
+    int2 south = ClampIndex(center + int2(0, 1));
+    int2 east = ClampIndex(center + int2(1, 0));
+    int2 west = ClampIndex(center + int2(-1, 0));
+    float4 previous = SourceBuffer[center];
+    float n = SourceBuffer[north].r, s = SourceBuffer[south].r;
+    float e = SourceBuffer[east].r, w = SourceBuffer[west].r;
+    float4 wb = previous;
+    wb.r = ((n + s + w + e) * 0.5 - OldBuffer[center].r) * 0.99;
+    wb.r *= max(0.0, 1.0 - deltaTime * 0.15);
+    wb.g = saturate(previous.g * max(0.0, 1.0 - deltaTime * 0.3)
+        + max(0.0, clamp(wb.r, 0.0, 10.0) - 0.02) * 8.0 * deltaTime);
+    float2 world = UVToWorld(IDToUV(id));
+    // Preserve the original circular AddFlow forcing.
+    for (int i = 0; i < FLOW_SOURCE_MAX; i++)
+    {
+        float2 d = world - fsPos[i];
+        if (dot(d, d) < fsRadius[i] * fsRadius[i]) wb.r += deltaTime * 5.0 * fsAmp[i];
+    }
+    for (int j = 0; j < SKIM_SOURCE_MAX; j++)
+    {
+        float4 a = skimPositionRadiusAmplitude[j];
+        float4 b = skimVelocityFoam[j];
+        if (b.w <= 0.0) continue;
+        float2 v = b.xy;
+        float speed = length(v);
+        float2 forward = speed > 0.0001 ? v / max(speed, 0.0001) : float2(1.0, 0.0);
+        float2 side = float2(-forward.y, forward.x);
+        float2 offset = world - a.xy;
+        float along = dot(offset, forward), across = dot(offset, side);
+        float speedFactor = saturate(speed / 1.0);
+        float lengthScale = a.z * (along < 0.0 ? 1.0 + 2.0 * speedFactor : 1.0);
+        float distance = length(float2(along / lengthScale, across / a.z));
+        float mask = 1.0 - smoothstep(0.0, 1.0, distance);
+        // A soft pressure footprint and an asymmetric, trailing ripple. It is a
+        // stylized forcing term, not a velocity or mass-conserving fluid solver.
+        float trail = saturate(-along / max(a.z, 0.001)) * speedFactor;
+        float ripple = sin((-along / max(a.z, 0.001)) * 6.2831853);
+        wb.r += deltaTime * 5.0 * a.w * mask * (1.0 + 0.45 * trail * ripple);
+        wb.g += deltaTime * b.z * mask * (0.35 + 0.65 * trail);
+    }
+    // Hard bounds keep a malformed or sustained source from poisoning the field.
+    wb.r = clamp(wb.r, -2.0, 2.0);
+    wb.g = saturate(wb.g);
+    wb.ba = clamp(float2(e - w, n - s) * 8.0, -2.0, 2.0);
+    // Read exclusively from the two input textures, write only our own pixel.
+    WaterBuffer[center] = wb;
+}
+
+#pragma kernel CSOffsetBuffers
+float2 offsetVector;
+[numthreads(32,32,1)]
+void CSOffsetBuffers(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= BUFFER_SIZE || id.y >= BUFFER_SIZE) return;
+    float2 uv = WorldToUV(UVToWorld(IDToUV(id)) + offsetVector);
+    int2 source = int2(round(uv * BUFFER_SIZE));
+    bool inside = all(source >= 0) && all(source < BUFFER_SIZE);
+    if (inside) WaterBuffer[id.xy] = SourceBuffer[source];
+    else WaterBuffer[id.xy] = float4(0,0,0,0);
+}

@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 8187481cbf0184993bd7c35e7462c65c
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  meshes:
+    globalScale: 1
+    useFileUnits: 1
+    useFileScale: 1
+    preserveHierarchy: 1
+  importAnimation: 0
+  userData: Prepared exact approved GLB; Unity importer unrun by author.
+  assetBundleName: 
+  assetBundleVariant: 

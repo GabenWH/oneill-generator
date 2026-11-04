@@ -1,0 +1,1 @@
+PASS: 530 own fan-input math assertions. NOT Unity compile/Play/GPU or original-kernel execution.

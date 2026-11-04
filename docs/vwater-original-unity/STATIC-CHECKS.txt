@@ -1,0 +1,1 @@
+PASS:150 exact original records,29 rig preflight assets, original texture/GUID closure, safe source wiring, approved FBX and own test evidence. Unity compile/Play/GPU UNRUN.

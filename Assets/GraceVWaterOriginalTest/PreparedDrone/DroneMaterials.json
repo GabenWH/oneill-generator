@@ -1,0 +1,109 @@
+{
+  "materials": [
+    {
+      "name": "GraceDroneMat_00",
+      "sourceName": "PAINT \u2022 Hull ivory",
+      "color": [
+        0.7599999904632568,
+        0.800000011920929,
+        0.7900000214576721,
+        1
+      ],
+      "metallic": 0.11999999731779099,
+      "roughness": 0.36000001430511475,
+      "alphaBlend": false,
+      "doubleSided": true,
+      "texture": ""
+    },
+    {
+      "name": "GraceDroneMat_01",
+      "sourceName": "PAINT \u2022 Recess gray",
+      "color": [
+        0.1899999976158142,
+        0.23000000417232513,
+        0.25,
+        1
+      ],
+      "metallic": 0.25,
+      "roughness": 0.5400000214576721,
+      "alphaBlend": false,
+      "doubleSided": true,
+      "texture": ""
+    },
+    {
+      "name": "GraceDroneMat_02",
+      "sourceName": "PAINT \u2022 Canopy cyan",
+      "color": [
+        0.008999999612569809,
+        0.04500000178813934,
+        0.06499999761581421,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.6499999761581421,
+      "alphaBlend": false,
+      "doubleSided": true,
+      "texture": ""
+    },
+    {
+      "name": "GraceDroneMat_03",
+      "sourceName": "PAINT \u2022 Dark trim + exhaust slots",
+      "color": [
+        0.02500000037252903,
+        0.03999999910593033,
+        0.05000000074505806,
+        1
+      ],
+      "metallic": 0.3499999940395355,
+      "roughness": 0.4300000071525574,
+      "alphaBlend": false,
+      "doubleSided": true,
+      "texture": ""
+    },
+    {
+      "name": "GraceDroneMat_04",
+      "sourceName": "PAINT \u2022 Motor face gray",
+      "color": [
+        0.11999999731779099,
+        0.1599999964237213,
+        0.18000000715255737,
+        1
+      ],
+      "metallic": 0.3499999940395355,
+      "roughness": 0.4399999976158142,
+      "alphaBlend": false,
+      "doubleSided": true,
+      "texture": ""
+    },
+    {
+      "name": "GraceDroneMat_05",
+      "sourceName": "PAINT \u2022 Underside vent graphic",
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.800000011920929,
+      "alphaBlend": true,
+      "doubleSided": true,
+      "texture": "DroneUnderside.png"
+    },
+    {
+      "name": "GraceDroneMat_06",
+      "sourceName": "PAINT \u2022 Fan metal",
+      "color": [
+        0.20000000298023224,
+        0.25,
+        0.27000001072883606,
+        1
+      ],
+      "metallic": 0.30000001192092896,
+      "roughness": 0.46000000834465027,
+      "alphaBlend": false,
+      "doubleSided": true,
+      "texture": ""
+    }
+  ]
+}

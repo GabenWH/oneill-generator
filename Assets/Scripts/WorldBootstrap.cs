@@ -17,6 +17,10 @@ public class WorldBootstrap : MonoBehaviour
     public Color lowColor;
     public Color midColor;
     public Color highColor;
+    [Header("Ground-effect test")]
+    public bool includeGroundEffectTestWater;
+    public Material groundEffectTestWaterMaterial;
+    public bool showGroundEffect;
     [Header("Drone Start")]
     [Tooltip("How far inside the terrain surface the drone starts.")]
     // Terrain can protrude up to 50 m inward, so this safely starts in open air.
@@ -63,6 +67,8 @@ public class WorldBootstrap : MonoBehaviour
             landMaterial;
         manager.glassMaterial =
             windowMaterial;
+        manager.includeGroundEffectTestWater = includeGroundEffectTestWater;
+        manager.groundEffectTestWaterMaterial = groundEffectTestWaterMaterial;
 
         // -----------------------------
         // DRONE
@@ -99,6 +105,9 @@ public class WorldBootstrap : MonoBehaviour
                     DroneController
             >();
         }
+
+        if (showGroundEffect && drone.TryGetComponent(out DroneController flight))
+            flight.showGroundEffect = true;
 
         // Start just inside the +X surface, looking across the habitat.
         drone.transform.position = new Vector3(

@@ -7,6 +7,18 @@ public class DroneController : MonoBehaviour
     public float thrust = 30f;
     public float boostMultiplier = 4f;
 
+    [Header("Ground effect")]
+    [Min(0f)] public float groundEffectRange = 12f;
+    [Min(0f)] public float groundEffectLift = 12f;
+    [Min(0f)] public float groundEffectDamping = 1f;
+    public bool showGroundEffect;
+
+    private CylinderGravity cylinderGravity;
+    private readonly RaycastHit[] groundHits = new RaycastHit[16];
+    private string groundEffectSurface = "none";
+    private float groundEffectDistance;
+    private float groundEffectAcceleration;
+
     [Header("Rotation")]
     public float mouseSensitivity = 2f;
     public float rollSpeed = 80f;
@@ -59,6 +71,9 @@ public class DroneController : MonoBehaviour
             $"{speed:F1} m/s", speedStyle);
         GUI.Label(new Rect(34f, top + 66f, 232f, 20f),
             $"{speed * 3.6f:F1} km/h", speedCaptionStyle);
+        if (showGroundEffect)
+            GUI.Label(new Rect(20f, top - 24f, 620f, 24f),
+                $"Ground effect: {groundEffectSurface} | {groundEffectDistance:F2} m | +{groundEffectAcceleration:F2} m/s²");
     }
 
     private void Awake()
@@ -99,6 +114,24 @@ public class DroneController : MonoBehaviour
     private void FixedUpdate()
     {
         HandleMovement();
+        ApplyGroundEffect();
+    }
+
+    private void ApplyGroundEffect()
+    {
+        if (cylinderGravity == null) cylinderGravity = GetComponent<CylinderGravity>();
+        ONeillWorld world = cylinderGravity != null ? cylinderGravity.world : null;
+        groundEffectSurface = "none";
+        groundEffectDistance = 0f;
+        groundEffectAcceleration = 0f;
+        if (!GroundEffectSurface.TryMeasure(world, rb.position, groundEffectRange, groundHits,
+            out Vector3 down, out RaycastHit hit)) return;
+
+        groundEffectDistance = hit.distance;
+        groundEffectAcceleration = GroundEffectSurface.Acceleration(hit.distance,
+            Vector3.Dot(rb.velocity, down), groundEffectRange, groundEffectLift, groundEffectDamping);
+        if (showGroundEffect) groundEffectSurface = hit.collider.gameObject.name;
+        rb.AddForce(-down * groundEffectAcceleration, ForceMode.Acceleration);
     }
 
     private void HandleMovement()
@@ -135,7 +168,7 @@ public class DroneController : MonoBehaviour
 
         if (input.sqrMagnitude > 1f)
             input.Normalize();
-        if(forward > 0f || mouseX>0.2f)
+        if (leftThruster != null && rightThruster != null && (forward > 0f || mouseX > 0.2f))
         {
             var leftEmission = leftThruster.emission;
             var rightEmission = rightThruster.emission;
@@ -151,8 +184,8 @@ public class DroneController : MonoBehaviour
         }
         else
         {
-            leftThruster.Stop();
-            rightThruster.Stop();
+            if (leftThruster != null) leftThruster.Stop();
+            if (rightThruster != null) rightThruster.Stop();
         }
         rb.AddRelativeForce(
             input *

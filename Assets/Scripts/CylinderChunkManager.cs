@@ -19,6 +19,8 @@ public class CylinderChunkManager : MonoBehaviour
     public Color midColor;
     public Color highColor;
     public Material glassMaterial;
+    public bool includeGroundEffectTestWater;
+    public Material groundEffectTestWaterMaterial;
 
     private void Start()
     {
@@ -78,6 +80,8 @@ public class CylinderChunkManager : MonoBehaviour
                 );
             }
         }
+        if (includeGroundEffectTestWater) GenerateGroundEffectTestWater();
+
         GameObject endCapA = new GameObject("EndCap_A");
         endCapA.transform.SetParent(transform,false);
 
@@ -102,6 +106,21 @@ public class CylinderChunkManager : MonoBehaviour
 
 
 
+    }
+
+    private void GenerateGroundEffectTestWater()
+    {
+        // A small optional flight-test surface, not a world-wide water layer.
+        // Use one fine slice and put it in front of the existing terrain relief.
+        const int slices = 256;
+        if (world.radius <= 252f) return;
+        var patch = new GameObject("Water (ground-effect test patch)");
+        patch.transform.SetParent(transform, false);
+        var water = patch.AddComponent<CylinderWaterChunk>();
+        water.surfaceRadius = world.radius - 252f;
+        var renderer = patch.GetComponent<MeshRenderer>();
+        renderer.sharedMaterial = groundEffectTestWaterMaterial != null ? groundEffectTestWaterMaterial : glassMaterial;
+        water.Generate(world, 0, slices / 2, slices, slices, 12, 4);
     }
 
     private void GenerateWindow(int a, int z)

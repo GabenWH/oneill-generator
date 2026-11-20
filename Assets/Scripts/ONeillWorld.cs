@@ -6,6 +6,24 @@ public class ONeillWorld : MonoBehaviour
     public float radius = 4000f;
     public float length = 32000f;
 
+    [Header("Surface")]
+    [Min(0f)] public float terrainAmplitude = 250f;
+    [Min(1f)] public float terrainDepth = 300f;
+    [Min(.01f)] public float glassThickness = 20f;
+    public float seaLevel;
+
+    public float WaterRadius => radius - seaLevel;
+    public float OuterRadius => radius + Mathf.Max(terrainDepth, terrainAmplitude + glassThickness);
+
+    public float SampleTerrainHeight(float angle, float z)
+    {
+        // Sampling on a circle makes noise periodic at the cylinder's angular seam.
+        float x = Mathf.Cos(angle) * 3f + 100f;
+        float y = Mathf.Sin(angle) * 3f + 100f;
+        float noise = Mathf.PerlinNoise(x, y + z * .0005f);
+        return (noise * 2f - 1f) * terrainAmplitude;
+    }
+
     [Header("Artificial Gravity")]
     [Tooltip("Surface gravity in m/s².")]
     public float surfaceGravity = 9.81f;

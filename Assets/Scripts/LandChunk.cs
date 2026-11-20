@@ -1,64 +1,23 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class LandChunk : CylinderChunk
 {
-
-    protected override int GenerateInnerSurface(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float angleStep, float zStep, float angleStart, float zStart, int v)
+    protected override float InnerRadius(ONeillWorld world, float angle, float z)
+        => world.radius - world.SampleTerrainHeight(angle, z);
+    protected override float OuterRadius(ONeillWorld world) => world.OuterRadius;
+    protected override Color SurfaceColor(ONeillWorld world, float angle, float z)
+        => new Color(Mathf.InverseLerp(-world.terrainAmplitude, world.terrainAmplitude,
+            world.SampleTerrainHeight(angle, z)), 0f, 0f, 1f);
+    protected override Vector3 SurfaceNormal(ONeillWorld world, float angle, float z)
     {
-        for (int z = 0; z <= longitudinalResolution; z++)
-        {
-
-            float worldZ =
-                zStart + zStep * z;
-
-            for (int a = 0; a <= angularResolution; a++)
-            {
-
-                float angle =
-                    angleStart + angleStep * a;
-
-                // Gentle terrain displacement.
-                float noise =
-                    Mathf.PerlinNoise(
-                        angle * 3f + 100f,
-                        worldZ * 0.0005f + 100f
-                    );
-
-                float terrainHeight =
-                    (noise - 0.5f) * 500f;
-
-                // Terrain grows inward from the nominal
-                // cylinder radius.
-                float r =
-                    world.radius - terrainHeight;
-
-                vertices[v] = new Vector3(
-                    Mathf.Cos(angle) * r,
-                    Mathf.Sin(angle) * r,
-                    worldZ
-                );
-
-                float heightForShader = Mathf.InverseLerp(-50f, 50f, terrainHeight);
-                colors[v] = new Color(heightForShader, 0f, 0f, 1f);
-
-                //I tried to make it simpler, but I just made it harder🥺
-                float u = a/(float)angularResolution;
-                float uZ = z/(float)longitudinalResolution;
-                uvs[v] = new Vector2(
-                    u,
-                    uZ
-                );
-
-                v++;
-            }
-        }
-
-        return v;
+        const float step = .0001f;
+        Vector3 before = Point(world, angle - step, z), after = Point(world, angle + step, z);
+        Vector3 back = Point(world, angle, z - 1f), front = Point(world, angle, z + 1f);
+        return Vector3.Cross(front - back, after - before).normalized;
     }
-    protected override int GenerateBottom(ONeillWorld world, int angularResolution, int longitudinalResolution, Vector3[] vertices, Color[] colors, Vector2[] uvs, float anglePerChunk, float lengthPerChunk, float angleStart, float zStart, int v)
+    private Vector3 Point(ONeillWorld world, float angle, float z)
     {
-        return v;
+        float radius = InnerRadius(world, angle, z);
+        return new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, z);
     }
 }

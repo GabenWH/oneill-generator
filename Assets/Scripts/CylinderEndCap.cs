@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class CylinderEndCap : MonoBehaviour
 {
+    private Mesh generatedMesh;
     // Start is called before the first frame update
 
 
@@ -14,7 +15,8 @@ public class CylinderEndCap : MonoBehaviour
     {
         MeshFilter meshFilter = GetComponent<MeshFilter>();
 
-        Mesh mesh = new Mesh();
+        if (generatedMesh != null) ReleaseMesh();
+        Mesh mesh = generatedMesh = new Mesh();
         mesh.name = "CylinderEndCap";
 
         Vector3[] verts = new Vector3[resolution * radialRes + 1];
@@ -95,5 +97,19 @@ public class CylinderEndCap : MonoBehaviour
         mesh.RecalculateBounds();
 
         meshFilter.sharedMesh = mesh;
+        var collider = GetComponent<MeshCollider>();
+        if (collider == null) collider = gameObject.AddComponent<MeshCollider>();
+        collider.sharedMesh = mesh;
     }
+
+    private void ReleaseMesh()
+    {
+        if (generatedMesh == null) return;
+        var collider = GetComponent<MeshCollider>();
+        if (collider != null) collider.sharedMesh = null;
+        if (Application.isPlaying) Destroy(generatedMesh);
+        else DestroyImmediate(generatedMesh);
+        generatedMesh = null;
+    }
+    private void OnDestroy() { ReleaseMesh(); }
 }

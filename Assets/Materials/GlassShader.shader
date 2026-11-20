@@ -17,13 +17,30 @@ Shader "Custom/GlassShader"
             "RenderType"="Transparent"
         }
         LOD 200
+        ZWrite Off
+        Cull Back
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard alpha:premul
+        #pragma surface surf CylinderGlass alpha:premul exclude_path:deferred
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
+        #include "UnityPBSLighting.cginc"
+        #include "../Water/Shaders/CylinderShadows.cginc"
+
+        inline half4 LightingCylinderGlass(SurfaceOutputStandard s, float3 viewDir, UnityGI gi)
+        {
+            return LightingStandard(s,viewDir,gi);
+        }
+        inline void LightingCylinderGlass_GI(SurfaceOutputStandard s,UnityGIInput data,inout UnityGI gi)
+        {
+            // Transparent panes need shadows at the pane, not the opaque terrain
+            // behind it in the camera's depth buffer.
+            if(_WorldSpaceLightPos0.w==0) data.atten=CylinderTransparentShadow(data.worldPos);
+            LightingStandard_GI(s,data,gi);
+            gi.light.color*=CylinderHousingTransmission(data.worldPos,data.light.dir);
+        }
 
         struct Input
         {

@@ -153,14 +153,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 4000
   length: 32000
-  dronePrefab: {fileID: 1400179906372130590, guid: c932de5b7999093588e273f2d9e7e734, type: 3}
+  landStripes: 3
+  dronePrefab: {fileID: 1788875170153838777, guid: a2e814889061d155a85b68762758a97a, type: 3}
   droneStartRadius: 1000
+  droneStartAngle: 30
+  droneSurfaceClearance: 75
   landMaterial: {fileID: 2100000, guid: 4367530a3b0d7393c811005908be383f, type: 2}
   windowMaterial: {fileID: 2100000, guid: 9ce3d8641f48838c7b7d36255d29f575, type: 2}
   lowColor: {r: 0, g: 0, b: 0, a: 0}
   midColor: {r: 0, g: 0, b: 0, a: 0}
   highColor: {r: 0, g: 0, b: 0, a: 0}
-  droneSurfaceClearance: 75
+  waterMaterial: {fileID: 2100000, guid: a8d9123e3b5d3336ba99d661884ecf23, type: 2}
+  waterCompute: {fileID: 7200000, guid: c842692fb1c204474a8418a73dcd49bb, type: 3}
+  flowMap: {fileID: 2800000, guid: c9f3a590d0e6c45629d6d810b88918a2, type: 3}
+  mistShader: {fileID: 4800000, guid: 6accd63251cd48309873fa936d5cf2dc, type: 3}
+  downwashProfile: {fileID: 11400000, guid: 6184cf5f106742169ec0a817e02cace1, type: 2}
 --- !u!4 &1271953778
 Transform:
   m_ObjectHideFlags: 0

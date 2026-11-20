@@ -8,11 +8,12 @@ Shader "Custom/LandShader"
         _Metallic ("Metallic", Range(0,1)) = 0.0
         _ValleyLandStepdown("Valley To Land Start",Range(0,1))=0.4
         _ValleyLandStepup("Valley To Land End",Range(0,1))=0.6
-        _LandPeakStepdown("Land to Peak Start",Range(0,1))=0.4
-        _LandPeakStepup("Land to Peak End",Range(0,1))=0.6
+        _LandPeakStepdown("Land to Peak Start",Range(0,1))=0.65
+        _LandPeakStepup("Land to Peak End",Range(0,1))=0.85
         _ValleyColor ("Valley Color", Color)= (0.08, 0.25,0.10,1)
-        _LandColor ("Land Color", Color)= (0.25,0.50,15,1)
+        _LandColor ("Land Color", Color)= (0.25,0.50,0.15,1)
         _PeakColor ("Peak Color", Color)= (0.45, 0.30, 0.20, 1)
+        _WallColor ("Terrain walls and shell", Color)= (0.22, 0.19, 0.15, 1)
     }
     SubShader
     {
@@ -21,10 +22,25 @@ Shader "Custom/LandShader"
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard fullforwardshadows
+        #pragma surface surf CylinderStandard fullforwardshadows exclude_path:deferred
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
+
+        #include "UnityPBSLighting.cginc"
+        #include "../Water/Shaders/CylinderShadows.cginc"
+
+        inline half4 LightingCylinderStandard(SurfaceOutputStandard s, float3 viewDir, UnityGI gi)
+        {
+            return LightingStandard(s, viewDir, gi);
+        }
+
+        inline void LightingCylinderStandard_GI(SurfaceOutputStandard s, UnityGIInput data, inout UnityGI gi)
+        {
+            LightingStandard_GI(s, data, gi);
+            // Block only direct sun; preserve ambient, reflection probes and GI.
+            gi.light.color *= CylinderHousingTransmission(data.worldPos, data.light.dir);
+        }
 
         sampler2D _MainTex;
 
@@ -42,6 +58,7 @@ Shader "Custom/LandShader"
         fixed4 _ValleyColor;
         fixed4 _LandColor;
         fixed4 _PeakColor;
+        fixed4 _WallColor;
     
         half _Glossiness;
         half _Metallic;
@@ -61,6 +78,7 @@ Shader "Custom/LandShader"
             float peakTransition = smoothstep(_LandPeakStepdown,_LandPeakStepup,height);
             fixed3 terrainColor = lerp(_ValleyColor.rgb, _LandColor.rgb, lowlandTransition);
             terrainColor = lerp(terrainColor,_PeakColor.rgb,peakTransition);
+            terrainColor = lerp(terrainColor, _WallColor.rgb, IN.color.g);
 
 
             o.Albedo = terrainColor;

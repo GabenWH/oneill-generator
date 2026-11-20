@@ -5,7 +5,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../../Assets/GraceVWaterOriginalTest/Runtime/DownwashMath.cs" />
+    <Compile Include="../../Assets/Water/Scripts/DownwashMath.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 </Project>
